@@ -5,7 +5,7 @@
 
 /* Header */
 .reports-header {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #2d3748 100%);
   color: white;
   padding: 48px 20px;
   box-shadow: var(--shadow-2xl);
@@ -110,7 +110,7 @@
   left: -100%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(45, 55, 72, 0.08) 0%, transparent 70%);
   transition: top 0.4s ease, left 0.4s ease;
   pointer-events: none;
 }
@@ -207,7 +207,7 @@
   right: 0;
   width: 0;
   height: 100%;
-  background: rgba(245, 158, 11, 0.05);
+  background: rgba(45, 55, 72, 0.05);
   transition: width 0.3s ease;
   z-index: 0;
 }
@@ -215,7 +215,7 @@
 .report-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
-  border-color: #f59e0b;
+  border-color: #4a5568;
 }
 
 .report-card:hover::before {
@@ -304,7 +304,7 @@
 }
 
 .stats-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(245, 158, 11, 0.03) 0%, transparent 100%);
+  background: linear-gradient(90deg, rgba(45, 55, 72, 0.03) 0%, transparent 100%);
 }
 
 .stats-table td {
@@ -330,10 +330,10 @@
 
 .occupancy-fill {
   height: 100%;
-  background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
+  background: linear-gradient(90deg, #4a5568 0%, #2d3748 100%);
   border-radius: 4px;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 2px 8px rgba(45, 55, 72, 0.3);
 }
 
 .occupancy-text {
