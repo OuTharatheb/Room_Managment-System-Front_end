@@ -94,6 +94,28 @@ export default function Bookings() {
     })
   }
 
+  useEffect(() => {
+    const pendingIdRaw = localStorage.getItem('pendingBookingEditId')
+    if (!pendingIdRaw) return
+
+    const pendingId = Number(pendingIdRaw)
+    if (!Number.isFinite(pendingId)) {
+      localStorage.removeItem('pendingBookingEditId')
+      return
+    }
+
+    const bookingToEdit = activeBookings.find(booking => booking.id === pendingId)
+    if (bookingToEdit) {
+      const timer = setTimeout(() => {
+        openForm(bookingToEdit)
+      }, 0)
+      localStorage.removeItem('pendingBookingEditId')
+      return () => clearTimeout(timer)
+    }
+
+    localStorage.removeItem('pendingBookingEditId')
+  }, [activeBookings])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -216,7 +238,7 @@ export default function Bookings() {
       {/* Header */}
       <div className="bookings-header">
         <div className="header-content">
-          <h1>� Guest Reservations</h1>
+          <h1>Guest Reservations</h1>
           <p>View and manage guest room bookings and check-ins</p>
         </div>
         <button className="btn btn-primary" onClick={() => openForm()}>
@@ -415,7 +437,7 @@ export default function Bookings() {
                         </td>
                         <td>
                           <span className={`status status-${booking.status}`}>
-                            {booking.status === 'confirmed' ? '⏳ Confirmed' : '✓ Checked In'}
+                            {booking.status === 'checked-in' ? '✓ Checked In' : '⏳ Confirmed'}
                           </span>
                         </td>
                         <td>

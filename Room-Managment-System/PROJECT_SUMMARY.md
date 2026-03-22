@@ -1,264 +1,101 @@
-# Room Management System - Project Complete ✅
+# Room Management System - Project Summary
 
-## Project Overview
-A complete, full-featured room management system built with React and Vite with a modern, responsive UI.
+## Overview
+Room Management System is a front-desk operations app built with React and Vite. It handles room management, booking workflows, check-in/check-out actions, history tracking, and calendar-based availability monitoring.
 
----
+## Architecture Snapshot
+- **Framework:** React
+- **Build Tool:** Vite
+- **State Pattern:** Local component state + browser storage
+- **Persistence:** `localStorage` (`activeBookings`, `bookingHistory`)
+- **Cross-Component Sync:** Custom browser events (`bookings-updated`, `navigate-page`)
 
-## 📁 Project Structure
+## Component Lessons
 
-```
-src/
-├── App.jsx (Main app with routing)
-├── App.css (App container styling)
-├── Sidebar.jsx (Navigation sidebar)
-├── Sidebar.css (Sidebar styling)
-├── Home.jsx (Dashboard with statistics)
-├── Home.css (Home page styling)
-├── Room.jsx (Room CRUD management)
-├── Room.css (Room page styling)
-├── Bookings.jsx (Booking management)
-├── Bookings.css (Booking page styling)
-├── Users.jsx (Staff management)
-├── Users.css (Users page styling)
-├── Reports.jsx (Analytics & reports)
-├── Reports.css (Reports page styling)
-├── Settings.jsx (System configuration)
-├── Settings.css (Settings page styling)
-├── main.jsx (App entry point)
-├── index.css (Global styles)
-├── assets/ (Images and resources)
-```
+### `App.jsx`
+**Lesson: Lightweight page routing for internal dashboards**
+- Uses a single `currentPage` state with switch-based rendering.
+- Keeps page-level control centralized and easy to extend.
+- Works well for compact tools where full router setup is not yet required.
 
----
+### `Sidebar.jsx`
+**Lesson: Data-driven navigation design**
+- Menu options are defined in an array for easy updates.
+- Active-state feedback improves navigation clarity.
+- Combines branding, navigation, and profile context in one reusable shell.
 
-## 🎯 Features Implemented
+### `Home.jsx`
+**Lesson: Summary-first dashboard UX**
+- Emphasizes high-value operational information at a glance.
+- Uses card-based composition to keep scanning fast.
+- Supports the receptionist workflow with quick visual status cues.
 
-### 1. **Dashboard (Home.jsx)**
-- Overview statistics (Total Rooms, Available, Booked, Maintenance)
-- Room cards with quick actions (View, Book, Edit)
-- Search and filter functionality
-- Responsive grid layout
+### `Room.jsx`
+**Lesson: CRUD plus derived room occupancy status**
+- Handles room create, update, and delete operations.
+- Derives room occupancy state from booking data events.
+- Separates editable metadata (room details) from live occupancy behavior.
 
-### 2. **Room Management (Room.jsx)**
-- ✅ Create new rooms
-- ✅ Read/View room details
-- ✅ Update room information
-- ✅ Delete rooms
-- ✅ Amenities selection (Projector, WiFi, etc.)
-- ✅ Status management
-- Modal form for creating/editing
-- Detailed room cards with amenities
+### `Bookings.jsx`
+**Lesson: Validation and booking integrity rules**
+- Validates required fields and date ordering.
+- Prevents overlapping reservations for the same room.
+- Persists active/history records and emits updates for other modules.
+- Implements check-in/check-out transitions with basic billing total logic.
 
-### 3. **Booking Management (Bookings.jsx)**
-- ✅ Create bookings
-- ✅ Edit bookings
-- ✅ Delete bookings
-- ✅ Update booking status (Pending, Confirmed, Cancelled)
-- Guest information tracking
-- Search by guest name, room, or email
-- Filter by status
-- Professional table layout
+### `Calendar.jsx`
+**Lesson: Time-based UI with direct operational actions**
+- Displays month-grid occupancy status (`check-in`, `occupied`, `check-out`, `available`).
+- Shows day-level room availability and booked guests.
+- Allows quick actions (check-in, check-out, edit booking) directly from date context.
+- Uses a custom confirmation modal for safer checkout actions.
 
-### 4. **Staff Management (Users.jsx)**
-- ✅ Add staff members
-- ✅ Edit staff information
-- ✅ Delete staff
-- Role assignment (Admin, Manager, Staff, Receptionist)
-- Department assignment
-- Status tracking (Active/Inactive)
-- User cards with details
+### `History.jsx`
+**Lesson: Read-optimized audit views**
+- Stores completed stays as historical records.
+- Supports traceability for timing and cost outcomes.
+- Keeps historical data flow separate from active booking operations.
 
-### 5. **Reports & Analytics (Reports.jsx)**
-- Key metrics display (Total Bookings, Occupancy Rate, Revenue, Rating)
-- Available reports cards
-- Room performance statistics table
-- Occupancy rate visualization
-- Revenue tracking
-- Export options (CSV, PDF, Excel)
+### `Guest.jsx`
+**Lesson: Feature modularity for domain separation**
+- Keeps guest-specific concerns separate from booking mechanics.
+- Supports future expansion of profile-level features without coupling.
 
-### 6. **Settings (Settings.jsx)**
-- **General Settings**: Business name, email, phone, timezone, currency
-- **Booking Settings**: Auto-confirm, advance days, min duration, cancellation buffer
-- **Notification Settings**: Email and SMS notifications
-- **Display Settings**: Dark mode, language options
-- Tabbed interface for organization
-- Success feedback on save
+### `Settings.jsx`
+**Lesson: Configurable behavior in one control surface**
+- Centralizes system-level preferences and options.
+- Improves maintainability by isolating settings from transactional screens.
 
-### 7. **Navigation (Sidebar.jsx)**
-- Fixed sidebar with logo and menu
-- Quick navigation between all pages
-- User profile section
-- Active page highlighting
-- Responsive (collapses on mobile)
-- Modern gradient design
+## Styling Lessons
 
----
+### `App.css` + `Sidebar.css`
+**Lesson: Stable application shell layout**
+- Fixed sidebar with a scrollable content region.
+- Responsive behavior ensures usability on smaller screens.
 
-## 🎨 UI/UX Features
+### Feature CSS files (`Bookings.css`, `Room.css`, `Calendar.css`, `Home.css`, `Guest.css`, `History.css`, `Settings.css`)
+**Lesson: Scoped styling by feature module**
+- Reduces style collision risk between pages.
+- Makes feature-level visual iteration safer and faster.
 
-### Design Elements
-- **Consistent Color Scheme**:
-  - Purple/Violet (Primary - #aa3bff)
-  - Cyan/Teal (Bookings - #06b6d4)
-  - Indigo (Rooms - #4f46e5)
-  - Violet (Staff - #8b5cf6)
-  - Amber (Reports - #f59e0b)
-  - Green (Settings - #10b981)
+### `index.css`
+**Lesson: Global tokens and baseline consistency**
+- Defines shared color, typography, and spacing variables.
+- Provides consistent defaults for app-wide rendering behavior.
 
-- **Responsive Design** (Mobile, Tablet, Desktop)
-- **Hover Effects & Animations**
-- **Modal Dialogs** for forms
-- **Color-coded Status Badges**
-- **Professional Gradients**
-- **Smooth Transitions**
+## Data and Event Flow Lessons
+- `localStorage` can be effective for prototype-level persistence.
+- Custom events provide a lightweight alternative to global state libraries for small apps.
+- Derived views (`Room`, `Calendar`) react to booking events rather than duplicating business rules.
 
-### Components
-- Status badges with auto-coloring
-- Stat cards with metrics
-- User avatars
-- Amenity tags
-- Occupancy progress bars
-- Empty states
+## Current Status
+- Booking edit handoff has been stabilized to avoid synchronous state updates in effects.
+- Calendar actions and booking workflows are integrated.
+- The project builds successfully and is ready for backend integration.
 
----
+## Suggested Next Steps
+1. Add backend APIs and replace `localStorage` with server persistence.
+2. Introduce React Router for deep-linking and browser history support.
+3. Add automated tests for overlap checks and state transitions.
+4. Centralize date/cost helpers in shared utility modules.
 
-## 🚀 Getting Started
-
-### Start Development Server
-```bash
-npm run dev
-```
-Server runs at: `http://localhost:5174/`
-
-### Build for Production
-```bash
-npm run build
-```
-
-### Run Linter
-```bash
-npm run lint
-```
-
-### Preview Production Build
-```bash
-npm run preview
-```
-
----
-
-## 📊 Data Management
-
-### Sample Data Included
-- 6 Sample Rooms with details
-- 4 Sample Bookings
-- 4 Sample Staff Members
-- Pre-configured Settings
-
-### State Management
-- React hooks (useState) for local state
-- Modular component design
-- Easy to integrate with backend API
-
----
-
-## 📱 Responsive Breakpoints
-
-- **Desktop**: Full layout with 260px sidebar
-- **Tablet** (≤768px): Sidebar adjusts, flexible grids
-- **Mobile** (≤480px): Collapsible sidebar (70px), stacked layouts
-
----
-
-## 🔧 Technology Stack
-
-- **Framework**: React 19.2.4
-- **Build Tool**: Vite 8.0.1
-- **Styling**: CSS3 with Custom Properties
-- **State Management**: React Hooks (useState)
-- **Code Quality**: ESLint with React plugins
-
----
-
-## ✨ Key Achievements
-
-✅ Complete CRUD operations on all modules
-✅ Professional and modern UI design
-✅ Responsive design for all devices
-✅ Search and filter functionality
-✅ Modal-based forms
-✅ Status management
-✅ Analytics and reporting
-✅ Settings configuration
-✅ Staff management
-✅ No build errors
-✅ No lint warnings
-✅ Development server running successfully
-
----
-
-## 🎯 Next Steps (Optional Enhancements)
-
-1. **Backend Integration**
-   - Connect to REST API for data persistence
-   - User authentication and authorization
-
-2. **Advanced Features**
-   - Calendar view for bookings
-   - Email notifications
-   - Payment processing
-   - Room images/photos
-   - Availability calendar
-
-3. **Performance**
-   - Add React Router for SPA navigation
-   - Context API for global state
-   - Data caching and pagination
-   - Lazy loading
-
-4. **Security**
-   - User authentication
-   - Role-based access control
-   - Input validation
-   - API security
-
----
-
-## 📝 Files Created/Modified
-
-**Created Files** (13):
-- App.jsx (updated with routing)
-- Sidebar.jsx
-- Sidebar.css
-- Home.jsx ✓
-- Home.css ✓
-- Room.jsx ✓
-- Room.css ✓
-- Bookings.jsx ✓
-- Bookings.css ✓
-- Users.jsx
-- Users.css
-- Reports.jsx
-- Reports.css
-- Settings.jsx
-- Settings.css
-
-**Updated Files** (1):
-- App.css (layout structure)
-
-**Cleaned Up**:
-- About.jsx (empty - can be deleted)
-- Guest.jsx (empty - can be deleted)
-
----
-
-## 🎉 Project Status: COMPLETE & READY TO USE
-
-The Room Management System is now fully functional with all core features implemented, professional styling, and ready for deployment or backend integration!
-
-**Access the app at**: `http://localhost:5174/`
-
----
-
-*Last Updated: March 22, 2026*

@@ -386,7 +386,7 @@
 }
 
 .bookings-table thead {
-  background: linear-gradient(135deg, #2384e4 0%, #4ea2f6 100%);
+  background: linear-gradient(135deg, #2384e4 0%, #f1f5f9 100%);
   border-bottom: 2px solid var(--border);
 }
 
@@ -422,7 +422,7 @@
 
 .bookings-table td {
   padding: 18px 16px;
-  color: black;
+  color: var(--text-h);
 }
 
 .guest-cell {
@@ -528,7 +528,7 @@
 
 .date-info div {
   font-weight: 600;
-  color: black;
+  color: var(--text-h);
 }
 
 .time-info {
