@@ -3,6 +3,7 @@ import './Sidebar.css'
 export default function Sidebar({ currentPage, setCurrentPage }) {
   const menuItems = [
     { id: 'bookings', label: 'Book Guest Room', icon: '📅' },
+    { id: 'calendar', label: 'Room Calendar', icon: '🗓️' },
     { id: 'rooms', label: 'View Rooms', icon: '🏢' },
     { id: 'home', label: 'Dashboard', icon: '📊' },
     { id: 'guests', label: 'Guests', icon: '👥' },
