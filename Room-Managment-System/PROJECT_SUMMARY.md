@@ -3,6 +3,13 @@
 ## Overview
 Room Management System is a front-desk operations app built with React and Vite. It handles room management, booking workflows, check-in/check-out actions, history tracking, and calendar-based availability monitoring.
 
+## Highlighted: What Is Used
+- **React features used:** `useState`, `useEffect`, conditional rendering, mapped lists, event handlers, prop passing.
+- **Browser APIs used:** `localStorage`, `CustomEvent`, `window.dispatchEvent`, `Date`.
+- **Tooling used:** Vite, ESLint.
+- **Styling approach used:** Feature-scoped CSS files + shared global tokens.
+- **Data strategy used:** Client-side state with local persistence (no backend yet).
+
 ## Architecture Snapshot
 - **Framework:** React
 - **Build Tool:** Vite
@@ -17,24 +24,28 @@ Room Management System is a front-desk operations app built with React and Vite.
 - Uses a single `currentPage` state with switch-based rendering.
 - Keeps page-level control centralized and easy to extend.
 - Works well for compact tools where full router setup is not yet required.
+- **Used:** `useState`, conditional rendering, component composition.
 
 ### `Sidebar.jsx`
 **Lesson: Data-driven navigation design**
 - Menu options are defined in an array for easy updates.
 - Active-state feedback improves navigation clarity.
 - Combines branding, navigation, and profile context in one reusable shell.
+- **Used:** array mapping for nav items, click handlers, active state styling.
 
 ### `Home.jsx`
 **Lesson: Summary-first dashboard UX**
 - Emphasizes high-value operational information at a glance.
 - Uses card-based composition to keep scanning fast.
 - Supports the receptionist workflow with quick visual status cues.
+- **Used:** dashboard cards, derived display values, layout-first UI composition.
 
 ### `Room.jsx`
 **Lesson: CRUD plus derived room occupancy status**
 - Handles room create, update, and delete operations.
 - Derives room occupancy state from booking data events.
 - Separates editable metadata (room details) from live occupancy behavior.
+- **Used:** form state handling, CRUD actions, `bookings-updated` event listeners.
 
 ### `Bookings.jsx`
 **Lesson: Validation and booking integrity rules**
@@ -42,6 +53,7 @@ Room Management System is a front-desk operations app built with React and Vite.
 - Prevents overlapping reservations for the same room.
 - Persists active/history records and emits updates for other modules.
 - Implements check-in/check-out transitions with basic billing total logic.
+- **Used:** `useState`, `useEffect`, form validation, overlap checks, `localStorage`, custom events, date arithmetic.
 
 ### `Calendar.jsx`
 **Lesson: Time-based UI with direct operational actions**
@@ -49,22 +61,26 @@ Room Management System is a front-desk operations app built with React and Vite.
 - Shows day-level room availability and booked guests.
 - Allows quick actions (check-in, check-out, edit booking) directly from date context.
 - Uses a custom confirmation modal for safer checkout actions.
+- **Used:** calendar grid logic, date comparisons, booking status badges, contextual action triggers.
 
 ### `History.jsx`
 **Lesson: Read-optimized audit views**
 - Stores completed stays as historical records.
 - Supports traceability for timing and cost outcomes.
 - Keeps historical data flow separate from active booking operations.
+- **Used:** table/list rendering, historical filtering patterns, read-only presentation.
 
 ### `Guest.jsx`
 **Lesson: Feature modularity for domain separation**
 - Keeps guest-specific concerns separate from booking mechanics.
 - Supports future expansion of profile-level features without coupling.
+- **Used:** modular component boundaries and feature-scoped styles.
 
 ### `Settings.jsx`
 **Lesson: Configurable behavior in one control surface**
 - Centralizes system-level preferences and options.
 - Improves maintainability by isolating settings from transactional screens.
+- **Used:** grouped setting controls, centralized preference UI patterns.
 
 ## Styling Lessons
 
@@ -82,6 +98,7 @@ Room Management System is a front-desk operations app built with React and Vite.
 **Lesson: Global tokens and baseline consistency**
 - Defines shared color, typography, and spacing variables.
 - Provides consistent defaults for app-wide rendering behavior.
+- **Used:** CSS variables/tokens, base reset, global typography and spacing rules.
 
 ## Data and Event Flow Lessons
 - `localStorage` can be effective for prototype-level persistence.
