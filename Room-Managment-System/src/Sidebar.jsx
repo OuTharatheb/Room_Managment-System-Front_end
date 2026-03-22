@@ -5,7 +5,8 @@ export default function Sidebar({ currentPage, setCurrentPage }) {
     { id: 'bookings', label: 'Book Guest Room', icon: '📅' },
     { id: 'rooms', label: 'View Rooms', icon: '🏢' },
     { id: 'home', label: 'Dashboard', icon: '📊' },
-    { id: 'reports', label: 'Reports', icon: '📈' },
+    { id: 'guests', label: 'Guests', icon: '👥' },
+    { id: 'history', label: 'History', icon: '📜' },
     { id: 'settings', label: 'Settings', icon: '⚙️' },
   ]
 

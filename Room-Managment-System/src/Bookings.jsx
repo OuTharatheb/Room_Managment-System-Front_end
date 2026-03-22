@@ -1,17 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Bookings.css'
 
 export default function Bookings() {
-  const [activeBookings, setActiveBookings] = useState([
-    { id: 1, roomNo: 'Double Room 201', guestName: 'John Doe', email: 'john@example.com', phone: '+1-555-0101', checkInDate: '2026-03-25', checkOutDate: '2026-03-27', guests: 2, status: 'confirmed', checkInTime: null, checkOutTime: null },
-    { id: 2, roomNo: 'Suite 301', guestName: 'Jane Smith', email: 'jane@example.com', phone: '+1-555-0102', checkInDate: '2026-03-25', checkOutDate: '2026-03-26', guests: 3, status: 'pending', checkInTime: null, checkOutTime: null },
-    { id: 3, roomNo: 'Single Room 101', guestName: 'Mike Johnson', email: 'mike@example.com', phone: '+1-555-0103', checkInDate: '2026-03-26', checkOutDate: '2026-03-28', guests: 1, status: 'checked-in', checkInTime: '14:30', checkOutTime: null },
-  ])
+  const [activeBookings, setActiveBookings] = useState(() => {
+    const saved = localStorage.getItem('activeBookings')
+    return saved ? JSON.parse(saved) : [
+      { id: 1, roomNo: 'Double Room 201', guestName: 'John Doe', email: 'john@example.com', phone: '+1-555-0101', checkInDate: '2026-03-25', checkOutDate: '2026-03-27', guests: 2, status: 'confirmed', checkInTime: null, checkOutTime: null },
+      { id: 2, roomNo: 'Suite 301', guestName: 'Jane Smith', email: 'jane@example.com', phone: '+1-555-0102', checkInDate: '2026-03-25', checkOutDate: '2026-03-26', guests: 3, status: 'pending', checkInTime: null, checkOutTime: null },
+      { id: 3, roomNo: 'Single Room 101', guestName: 'Mike Johnson', email: 'mike@example.com', phone: '+1-555-0103', checkInDate: '2026-03-26', checkOutDate: '2026-03-28', guests: 1, status: 'checked-in', checkInTime: '14:30', checkOutTime: null },
+    ]
+  })
 
-  const [bookingHistory, setBookingHistory] = useState([
-    { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: '$280' },
-    { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: '$350' },
-  ])
+  const [bookingHistory, setBookingHistory] = useState(() => {
+    const saved = localStorage.getItem('bookingHistory')
+    return saved ? JSON.parse(saved) : [
+      { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: '$280' },
+      { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: '$350' },
+    ]
+  })
 
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState(null)
@@ -26,6 +32,17 @@ export default function Bookings() {
     checkOutDate: '',
     guests: '',
   })
+
+  // Save bookings to localStorage
+  useEffect(() => {
+    localStorage.setItem('activeBookings', JSON.stringify(activeBookings))
+    window.dispatchEvent(new CustomEvent('bookings-updated'))
+  }, [activeBookings])
+
+  useEffect(() => {
+    localStorage.setItem('bookingHistory', JSON.stringify(bookingHistory))
+    window.dispatchEvent(new CustomEvent('bookings-updated'))
+  }, [bookingHistory])
 
   const rooms = [
     { id: 1, name: 'Single Room 101', rate: 100 },
@@ -82,10 +99,55 @@ export default function Bookings() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  const isRoomAvailable = (roomName, checkInDate, checkOutDate, excludeBookingId = null) => {
+    const newCheckIn = new Date(checkInDate)
+    const newCheckOut = new Date(checkOutDate)
+
+    // Check against active bookings
+    for (let booking of activeBookings) {
+      if (booking.id === excludeBookingId) continue
+      if (booking.roomNo !== roomName) continue
+
+      const existingCheckIn = new Date(booking.checkInDate)
+      const existingCheckOut = new Date(booking.checkOutDate)
+
+      // Check for overlapping dates
+      if (newCheckIn < existingCheckOut && newCheckOut > existingCheckIn) {
+        return false
+      }
+    }
+
+    // Check against booking history
+    for (let booking of bookingHistory) {
+      if (booking.roomNo !== roomName) continue
+
+      const existingCheckIn = new Date(booking.checkInDate)
+      const existingCheckOut = new Date(booking.checkOutDate)
+
+      // Check for overlapping dates
+      if (newCheckIn < existingCheckOut && newCheckOut > existingCheckIn) {
+        return false
+      }
+    }
+
+    return true
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!formData.roomNo || !formData.guestName || !formData.email || !formData.checkInDate || !formData.checkOutDate) {
       alert('Please fill all required fields')
+      return
+    }
+
+    if (new Date(formData.checkOutDate) <= new Date(formData.checkInDate)) {
+      alert('Check-out date must be after check-in date')
+      return
+    }
+
+    // Check room availability
+    if (!isRoomAvailable(formData.roomNo, formData.checkInDate, formData.checkOutDate, selectedBooking?.id)) {
+      alert(`❌ Sorry, ${formData.roomNo} is already booked for those dates. Please select different dates or another room.`)
       return
     }
 
@@ -105,6 +167,13 @@ export default function Bookings() {
       }])
     }
     closeForm()
+  }
+
+  const getAvailableRooms = () => {
+    if (!formData.checkInDate || !formData.checkOutDate) {
+      return rooms
+    }
+    return rooms.filter(room => isRoomAvailable(room.name, formData.checkInDate, formData.checkOutDate, selectedBooking?.id))
   }
 
   const checkInGuest = (id) => {
@@ -168,7 +237,13 @@ export default function Bookings() {
 
               <form onSubmit={handleSubmit} className="booking-form">
                 <div className="form-group">
-                  <label htmlFor="roomNo">Room *</label>
+                  <label htmlFor="roomNo">Room * 
+                    {formData.checkInDate && formData.checkOutDate && (
+                      <span style={{ fontSize: '12px', marginLeft: '8px' }}>
+                        ({getAvailableRooms().length} available)
+                      </span>
+                    )}
+                  </label>
                   <select
                     id="roomNo"
                     name="roomNo"
@@ -177,11 +252,15 @@ export default function Bookings() {
                     required
                   >
                     <option value="">Select a room</option>
-                    {rooms.map(room => (
-                      <option key={room.id} value={room.name}>
-                        {room.name} (${room.rate}/night)
-                      </option>
-                    ))}
+                    {rooms.map(room => {
+                      const isAvailable = !formData.checkInDate || !formData.checkOutDate || 
+                        isRoomAvailable(room.name, formData.checkInDate, formData.checkOutDate, selectedBooking?.id)
+                      return (
+                        <option key={room.id} value={room.name} disabled={!isAvailable && formData.checkInDate && formData.checkOutDate}>
+                          {room.name} (${room.rate}/night) {!isAvailable && formData.checkInDate && formData.checkOutDate ? '❌ Booked' : '✅ Available'}
+                        </option>
+                      )
+                    })}
                   </select>
                 </div>
 

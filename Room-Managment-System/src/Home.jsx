@@ -1,21 +1,46 @@
+import { useEffect, useState } from 'react'
 import './Home.css'
 
 export default function Home() {
+  const [bookingsVersion, setBookingsVersion] = useState(0)
+
+  useEffect(() => {
+    const onBookingsUpdated = () => setBookingsVersion(v => v + 1)
+    window.addEventListener('bookings-updated', onBookingsUpdated)
+    window.addEventListener('storage', onBookingsUpdated)
+    return () => {
+      window.removeEventListener('bookings-updated', onBookingsUpdated)
+      window.removeEventListener('storage', onBookingsUpdated)
+    }
+  }, [])
+
   const rooms = [
     { id: 1, name: 'Single Room 101', capacity: 1, status: 'available', floor: '1st' },
-    { id: 2, name: 'Single Room 102', capacity: 1, status: 'booked', floor: '1st' },
+    { id: 2, name: 'Single Room 102', capacity: 1, status: 'available', floor: '1st' },
     { id: 3, name: 'Double Room 201', capacity: 2, status: 'available', floor: '2nd' },
-    { id: 4, name: 'Double Room 202', capacity: 2, status: 'maintenance', floor: '2nd' },
-    { id: 5, name: 'Suite 301', capacity: 3, status: 'booked', floor: '3rd' },
+    { id: 4, name: 'Double Room 202', capacity: 2, status: 'available', floor: '2nd' },
+    { id: 5, name: 'Suite 301', capacity: 3, status: 'available', floor: '3rd' },
     { id: 6, name: 'Suite 302', capacity: 3, status: 'available', floor: '3rd' },
   ]
 
-  const stats = [
-    { icon: '🛏️', label: 'Total Rooms', value: rooms.length, color: '#4a5568' },
-    { icon: '✅', label: 'Available', value: rooms.filter(r => r.status === 'available').length, color: '#10b981' },
-    { icon: '📋', label: 'Booked', value: rooms.filter(r => r.status === 'booked').length, color: '#3b82f6' },
-    { icon: '🔧', label: 'Maintenance', value: rooms.filter(r => r.status === 'maintenance').length, color: '#f59e0b' },
-  ]
+  // Calculate stats based on current bookings
+  function getStats() {
+    void bookingsVersion
+    const activeBookings = JSON.parse(localStorage.getItem('activeBookings') || '[]')
+    const bookedRoomNames = new Set(activeBookings.map(booking => booking.roomNo))
+    const bookedCount = bookedRoomNames.size
+    const totalGuests = activeBookings.reduce((sum, booking) => sum + (parseInt(booking.guests, 10) || 0), 0)
+
+    const availableCount = 6 - bookedCount
+    return [
+      { icon: '🛏️', label: 'Total Rooms', value: 6, color: '#4a5568' },
+      { icon: '✅', label: 'Available', value: availableCount, color: '#10b981' },
+      { icon: '📋', label: 'Booked', value: bookedCount, color: '#3b82f6' },
+      { icon: '👥', label: 'Guests', value: totalGuests, color: '#FDB022' },
+    ]
+  }
+
+  const stats = getStats()
 
   const getStatusClass = (status) => {
     return `status status-${status}`

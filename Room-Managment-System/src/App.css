@@ -1,12 +1,31 @@
 .app-container {
   display: flex;
   min-height: 100vh;
+  background: linear-gradient(135deg, #fafaf9 0%, #ffffff 50%, #f5f3f0 100%);
 }
 
 .app-main {
   flex: 1;
   margin-left: 260px;
   overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.app-main::-webkit-scrollbar {
+  width: 10px;
+}
+
+.app-main::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.app-main::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
+  border-radius: 10px;
+}
+
+.app-main::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #D4A01F 0%, #FDB022 100%);
 }
 
 /* Responsive */

@@ -1,15 +1,49 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './Room.css'
 
 export default function Room() {
-  const [rooms, setRooms] = useState([
+  const initialRooms = [
     { id: 1, name: 'Single Room 101', capacity: 1, status: 'available', floor: '1st', amenities: ['WiFi', 'AC', 'TV'] },
-    { id: 2, name: 'Single Room 102', capacity: 1, status: 'booked', floor: '1st', amenities: ['WiFi', 'AC', 'TV'] },
+    { id: 2, name: 'Single Room 102', capacity: 1, status: 'available', floor: '1st', amenities: ['WiFi', 'AC', 'TV'] },
     { id: 3, name: 'Double Room 201', capacity: 2, status: 'available', floor: '2nd', amenities: ['WiFi', 'AC', 'TV', 'Minibar'] },
-    { id: 4, name: 'Double Room 202', capacity: 2, status: 'maintenance', floor: '2nd', amenities: ['WiFi', 'AC', 'TV'] },
-    { id: 5, name: 'Suite 301', capacity: 3, status: 'booked', floor: '3rd', amenities: ['WiFi', 'AC', 'TV', 'Minibar', 'Safe', 'Workspace'] },
+    { id: 4, name: 'Double Room 202', capacity: 2, status: 'available', floor: '2nd', amenities: ['WiFi', 'AC', 'TV'] },
+    { id: 5, name: 'Suite 301', capacity: 3, status: 'available', floor: '3rd', amenities: ['WiFi', 'AC', 'TV', 'Minibar', 'Safe', 'Workspace'] },
     { id: 6, name: 'Suite 302', capacity: 3, status: 'available', floor: '3rd', amenities: ['WiFi', 'AC', 'TV', 'Minibar', 'Safe'] },
-  ])
+  ]
+
+  const [internalRooms, setInternalRooms] = useState(initialRooms)
+  const [bookingsVersion, setBookingsVersion] = useState(0)
+
+  useEffect(() => {
+    const onBookingsUpdated = () => setBookingsVersion(v => v + 1)
+    window.addEventListener('bookings-updated', onBookingsUpdated)
+    window.addEventListener('storage', onBookingsUpdated)
+    return () => {
+      window.removeEventListener('bookings-updated', onBookingsUpdated)
+      window.removeEventListener('storage', onBookingsUpdated)
+    }
+  }, [])
+
+  const displayRooms = useMemo(() => {
+    void bookingsVersion
+    const activeBookings = JSON.parse(localStorage.getItem('activeBookings') || '[]')
+
+    return internalRooms.map(room => {
+      if (room.status === 'maintenance') {
+        return room
+      }
+
+      const bookingForRoom = activeBookings.find(booking => booking.roomNo === room.name)
+      if (!bookingForRoom) {
+        return { ...room, status: 'available' }
+      }
+
+      return {
+        ...room,
+        status: bookingForRoom.status === 'checked-in' ? 'checked-in' : 'booked',
+      }
+    })
+  }, [internalRooms, bookingsVersion])
 
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -60,24 +94,24 @@ export default function Room() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (selectedRoom) {
-      setRooms(rooms.map(r => 
+      setInternalRooms(internalRooms.map(r =>
         r.id === selectedRoom.id 
           ? { ...r, ...formData }
           : r
       ))
     } else {
-      setRooms([...rooms, { ...formData, id: Date.now(), status: 'available' }])
+      setInternalRooms([...internalRooms, { ...formData, id: Date.now(), status: 'available' }])
     }
     closeForm()
   }
 
   const deleteRoom = (id) => {
-    setRooms(rooms.filter(r => r.id !== id))
+    setInternalRooms(internalRooms.filter(r => r.id !== id))
     setSelectedRoom(null)
   }
 
   const updateStatus = (id, newStatus) => {
-    setRooms(rooms.map(r => 
+    setInternalRooms(internalRooms.map(r =>
       r.id === id ? { ...r, status: newStatus } : r
     ))
   }
@@ -182,16 +216,16 @@ export default function Room() {
         )}
 
         {/* Rooms Detail View */}
-        <div className="rooms-detail-section">
-          <h2>📋 All Rooms ({rooms.length})</h2>
+          <div className="rooms-detail-section">
+            <h2>📋 All Rooms ({displayRooms.length})</h2>
           
           <div className="rooms-detail-list">
-            {rooms.length === 0 ? (
+             {displayRooms.length === 0 ? (
               <div className="empty-state">
                 <p>No rooms found. Create your first room to get started.</p>
               </div>
             ) : (
-              rooms.map(room => (
+               displayRooms.map(room => (
                 <div key={room.id} className="room-detail-card">
                   <div className="room-detail-header">
                     <div className="room-title">
@@ -236,11 +270,18 @@ export default function Room() {
                         value={room.status}
                         onChange={(e) => updateStatus(room.id, e.target.value)}
                         className="status-select"
+                        disabled={room.status === 'booked' || room.status === 'checked-in'}
                       >
                         <option value="available">Available</option>
                         <option value="booked">Booked</option>
+                        <option value="checked-in">Checked In</option>
                         <option value="maintenance">Maintenance</option>
                       </select>
+                      {(room.status === 'booked' || room.status === 'checked-in') && (
+                        <span style={{ fontSize: '12px', color: '#666', marginLeft: '8px' }}>
+                          (Auto-updated by bookings)
+                        </span>
+                      )}
                     </div>
 
                     <div className="room-actions">

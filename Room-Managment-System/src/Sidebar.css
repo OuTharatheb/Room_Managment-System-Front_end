@@ -1,6 +1,6 @@
 .sidebar {
   width: 260px;
-  background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+  background: linear-gradient(135deg, #1a1f35 0%, #252d42 100%);
   color: white;
   display: flex;
   flex-direction: column;
@@ -8,9 +8,9 @@
   left: 0;
   top: 0;
   height: 100vh;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
   z-index: 100;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(253, 176, 34, 0.1);
 }
 
 /* Logo Section */
@@ -38,7 +38,7 @@
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -79,21 +79,21 @@
   transform: translateY(-50%);
   width: 3px;
   height: 0;
-  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
   transition: height 0.3s ease;
   border-radius: 0 2px 2px 0;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(253, 176, 34, 0.08);
+  color: rgba(255, 255, 255, 0.95);
   transform: translateX(4px);
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(124, 58, 237, 0.1) 100%);
-  color: #a78bfa;
-  box-shadow: inset 0 0 20px rgba(167, 139, 250, 0.1);
+  background: linear-gradient(135deg, rgba(253, 176, 34, 0.15) 0%, rgba(212, 160, 31, 0.08) 100%);
+  color: #FDB022;
+  box-shadow: inset 0 0 20px rgba(253, 176, 34, 0.12);
 }
 
 .nav-item.active::before {
@@ -135,14 +135,14 @@
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 16px;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+  box-shadow: 0 4px 12px rgba(253, 176, 34, 0.3);
 }
 
 .user-info {

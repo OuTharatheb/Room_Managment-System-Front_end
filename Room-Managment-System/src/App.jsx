@@ -3,8 +3,8 @@ import Home from './Home'
 import Room from './Room'
 import Bookings from './Bookings'
 import Settings from './Settings'
-import Users from './Users'
-import Reports from './Reports'
+import Guest from './Guest'
+import History from './History'
 import Sidebar from './Sidebar'
 import './App.css'
 
@@ -19,10 +19,10 @@ function App() {
         return <Room />
       case 'home':
         return <Home />
-      case 'users':
-        return <Users />
-      case 'reports':
-        return <Reports />
+      case 'guests':
+        return <Guest />
+      case 'history':
+        return <History />
       case 'settings':
         return <Settings />
       default:
