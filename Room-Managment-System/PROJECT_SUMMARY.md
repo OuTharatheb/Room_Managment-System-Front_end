@@ -105,6 +105,23 @@ Room Management System is a front-desk operations app built with React and Vite.
 - Custom events provide a lightweight alternative to global state libraries for small apps.
 - Derived views (`Room`, `Calendar`) react to booking events rather than duplicating business rules.
 
+## Quick Reference Table (What Is Used)
+
+| Module | What Is Used | Why It Matters |
+| --- | --- | --- |
+| `App.jsx` | `useState`, conditional rendering | Simple internal page routing without React Router |
+| `Sidebar.jsx` | Menu array mapping, click handlers | Easy-to-maintain navigation with active feedback |
+| `Home.jsx` | Summary cards, derived metrics | Fast operational overview for front-desk work |
+| `Room.jsx` | Form state, CRUD logic, custom event listening | Room management stays synced with booking changes |
+| `Bookings.jsx` | `useState`, `useEffect`, validation, overlap checks, `localStorage` | Core booking integrity and check-in/check-out workflow |
+| `Calendar.jsx` | Date grid logic, status mapping, action triggers | Visual occupancy and daily action control |
+| `History.jsx` | Read-only table rendering, history data display | Clear audit trail of completed stays |
+| `Guest.jsx` | Feature separation, scoped styles | Keeps guest domain concerns modular |
+| `Settings.jsx` | Grouped settings UI patterns | Centralized system preference control |
+| `App.css` + `Sidebar.css` | Shell layout and responsive sidebar behavior | Stable full app structure |
+| Feature CSS files | Per-feature scoped styling | Lower style collision and safer iterations |
+| `index.css` | CSS tokens and global defaults | Consistent typography, spacing, and theming |
+
 ## Current Status
 - Booking edit handoff has been stabilized to avoid synchronous state updates in effects.
 - Calendar actions and booking workflows are integrated.
