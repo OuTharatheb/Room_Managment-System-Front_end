@@ -71,11 +71,11 @@ export default function Users() {
       {/* Header */}
       <div className="users-header">
         <div className="header-content">
-          <h1>👥 Staff Management</h1>
-          <p>Manage team members and access control</p>
+          <h1>👥 Receptionist Management</h1>
+          <p>Manage receptionists and desk operations</p>
         </div>
         <button className="btn btn-primary" onClick={() => openForm()}>
-          + Add Staff Member
+          + Add Receptionist
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export default function Users() {
           <div className="modal-overlay" onClick={closeForm}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>{selectedUser ? 'Edit Staff Member' : 'Add New Staff Member'}</h2>
+                <h2>{selectedUser ? 'Edit Receptionist' : 'Add New Receptionist'}</h2>
                 <button className="close-btn" onClick={closeForm}>&times;</button>
               </div>
 
@@ -167,7 +167,7 @@ export default function Users() {
                     Cancel
                   </button>
                   <button type="submit" className="btn btn-primary">
-                    {selectedUser ? 'Update Staff' : 'Add Staff'}
+                    {selectedUser ? 'Update Receptionist' : 'Add Receptionist'}
                   </button>
                 </div>
               </form>
@@ -183,7 +183,7 @@ export default function Users() {
 
           {users.length === 0 ? (
             <div className="empty-state">
-              <p>No staff members found. Add your first staff member to get started.</p>
+              <p>No receptionists found. Add your first receptionist to get started.</p>
             </div>
           ) : (
             <div className="users-grid">

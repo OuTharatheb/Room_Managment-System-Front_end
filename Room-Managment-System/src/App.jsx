@@ -9,16 +9,16 @@ import Sidebar from './Sidebar'
 import './App.css'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
+  const [currentPage, setCurrentPage] = useState('bookings')
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'home':
-        return <Home />
-      case 'rooms':
-        return <Room />
       case 'bookings':
         return <Bookings />
+      case 'rooms':
+        return <Room />
+      case 'home':
+        return <Home />
       case 'users':
         return <Users />
       case 'reports':
@@ -26,7 +26,7 @@ function App() {
       case 'settings':
         return <Settings />
       default:
-        return <Home />
+        return <Bookings />
     }
   }
 

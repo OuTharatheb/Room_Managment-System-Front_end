@@ -3,25 +3,25 @@ import './Reports.css'
 
 export default function Reports() {
   const reports = [
-    { id: 1, title: 'Room Utilization Report', description: 'View average room occupancy rates', icon: '📊', color: '#aa3bff' },
-    { id: 2, title: 'Booking Analytics', description: 'Monthly and yearly booking trends', icon: '📈', color: '#06b6d4' },
-    { id: 3, title: 'Revenue Report', description: 'Track booking revenue and payments', icon: '💰', color: '#10b981' },
-    { id: 4, title: 'Room Status Report', description: 'Maintenance schedules and room status', icon: '🔧', color: '#f59e0b' },
+    { id: 1, title: 'Occupancy Report', description: 'View daily and monthly occupancy rates', icon: '📊', color: '#4a5568' },
+    { id: 2, title: 'Booking Trends', description: 'Track booking patterns and peak times', icon: '📈', color: '#3b82f6' },
+    { id: 3, title: 'Revenue Report', description: 'Track total revenue and payment status', icon: '💰', color: '#10b981' },
+    { id: 4, title: 'Guest Report', description: 'View guest check-ins and check-outs', icon: '👥', color: '#8b5cf6' },
   ]
 
   const stats = [
-    { label: 'Total Bookings', value: '156', change: '+12%', color: '#06b6d4' },
-    { label: 'Room Occupancy', value: '72%', change: '+5%', color: '#10b981' },
-    { label: 'Revenue', value: '$24,500', change: '+18%', color: '#aa3bff' },
-    { label: 'Average Rating', value: '4.8/5', change: '+0.3%', color: '#f59e0b' },
+    { label: 'Total Bookings', value: '156', change: '+12%', color: '#3b82f6' },
+    { label: 'Occupancy Rate', value: '72%', change: '+5%', color: '#10b981' },
+    { label: 'Total Revenue', value: '$24,500', change: '+18%', color: '#4a5568' },
+    { label: 'Avg Stay Days', value: '2.3', change: '+0.3%', color: '#8b5cf6' },
   ]
 
   const roomStats = [
-    { name: 'Conference Room A', bookings: 34, occupancy: '85%', revenue: '$3,400' },
-    { name: 'Conference Room B', bookings: 28, occupancy: '72%', revenue: '$2,800' },
-    { name: 'Meeting Room 101', bookings: 22, occupancy: '68%', revenue: '$1,650' },
-    { name: 'Board Room', bookings: 18, occupancy: '65%', revenue: '$5,400' },
-    { name: 'Training Room', bookings: 54, occupancy: '89%', revenue: '$8,100' },
+    { name: 'Single Room 101', bookings: 34, occupancy: '85%', revenue: '$2,040' },
+    { name: 'Single Room 102', bookings: 28, occupancy: '72%', revenue: '$1,680' },
+    { name: 'Double Room 201', bookings: 42, occupancy: '88%', revenue: '$5,460' },
+    { name: 'Double Room 202', bookings: 38, occupancy: '80%', revenue: '$4,940' },
+    { name: 'Suite 301', bookings: 18, occupancy: '65%', revenue: '$8,100' },
   ]
 
   const [selectedReport, setSelectedReport] = useState(null)
@@ -31,8 +31,8 @@ export default function Reports() {
       {/* Header */}
       <div className="reports-header">
         <div className="header-content">
-          <h1>📊 Reports & Analytics</h1>
-          <p>Track performance and generate insights</p>
+          <h1>📊 Hotel Reports</h1>
+          <p>View occupancy and booking analytics</p>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export default function Reports() {
 
         {/* Room Statistics Table */}
         <section className="room-stats-section">
-          <h2>🏢 Room Performance</h2>
+          <h2>🛏️ Room Performance</h2>
           <div className="table-wrapper">
             <table className="stats-table">
               <thead>

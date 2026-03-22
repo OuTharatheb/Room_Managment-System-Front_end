@@ -2,59 +2,61 @@ import { useState } from 'react'
 import './Bookings.css'
 
 export default function Bookings() {
-  const [bookings, setBookings] = useState([
-    { id: 1, roomId: 1, roomName: 'Conference Room A', guestName: 'John Doe', email: 'john@example.com', date: '2026-03-25', startTime: '09:00', endTime: '11:00', status: 'confirmed', attendees: 8 },
-    { id: 2, roomId: 2, roomName: 'Conference Room B', guestName: 'Jane Smith', email: 'jane@example.com', date: '2026-03-25', startTime: '14:00', endTime: '15:30', status: 'pending', attendees: 5 },
-    { id: 3, roomId: 5, roomName: 'Board Room', guestName: 'Mike Johnson', email: 'mike@example.com', date: '2026-03-26', startTime: '10:00', endTime: '12:00', status: 'confirmed', attendees: 15 },
-    { id: 4, roomId: 3, roomName: 'Meeting Room 101', guestName: 'Sarah Williams', email: 'sarah@example.com', date: '2026-03-26', startTime: '15:00', endTime: '16:00', status: 'cancelled', attendees: 4 },
+  const [activeBookings, setActiveBookings] = useState([
+    { id: 1, roomNo: 'Double Room 201', guestName: 'John Doe', email: 'john@example.com', phone: '+1-555-0101', checkInDate: '2026-03-25', checkOutDate: '2026-03-27', guests: 2, status: 'confirmed', checkInTime: null, checkOutTime: null },
+    { id: 2, roomNo: 'Suite 301', guestName: 'Jane Smith', email: 'jane@example.com', phone: '+1-555-0102', checkInDate: '2026-03-25', checkOutDate: '2026-03-26', guests: 3, status: 'pending', checkInTime: null, checkOutTime: null },
+    { id: 3, roomNo: 'Single Room 101', guestName: 'Mike Johnson', email: 'mike@example.com', phone: '+1-555-0103', checkInDate: '2026-03-26', checkOutDate: '2026-03-28', guests: 1, status: 'checked-in', checkInTime: '14:30', checkOutTime: null },
+  ])
+
+  const [bookingHistory, setBookingHistory] = useState([
+    { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: '$280' },
+    { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: '$350' },
   ])
 
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState(null)
-  const [filterStatus, setFilterStatus] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
+  const [showHistory, setShowHistory] = useState(false)
   const [formData, setFormData] = useState({
-    roomId: '',
-    roomName: '',
+    roomNo: '',
     guestName: '',
     email: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    attendees: '',
+    phone: '',
+    checkInDate: '',
+    checkOutDate: '',
+    guests: '',
   })
 
   const rooms = [
-    { id: 1, name: 'Conference Room A' },
-    { id: 2, name: 'Conference Room B' },
-    { id: 3, name: 'Meeting Room 101' },
-    { id: 5, name: 'Board Room' },
-    { id: 6, name: 'Training Room' },
+    { id: 1, name: 'Single Room 101', rate: 100 },
+    { id: 2, name: 'Single Room 102', rate: 100 },
+    { id: 3, name: 'Double Room 201', rate: 150 },
+    { id: 4, name: 'Double Room 202', rate: 150 },
+    { id: 5, name: 'Suite 301', rate: 250 },
+    { id: 6, name: 'Suite 302', rate: 250 },
   ]
 
   const openForm = (booking = null) => {
     if (booking) {
       setFormData({
-        roomId: booking.roomId,
-        roomName: booking.roomName,
+        roomNo: booking.roomNo,
         guestName: booking.guestName,
         email: booking.email,
-        date: booking.date,
-        startTime: booking.startTime,
-        endTime: booking.endTime,
-        attendees: booking.attendees,
+        phone: booking.phone,
+        checkInDate: booking.checkInDate,
+        checkOutDate: booking.checkOutDate,
+        guests: booking.guests,
       })
       setSelectedBooking(booking)
     } else {
       setFormData({
-        roomId: '',
-        roomName: '',
+        roomNo: '',
         guestName: '',
         email: '',
-        date: '',
-        startTime: '',
-        endTime: '',
-        attendees: '',
+        phone: '',
+        checkInDate: '',
+        checkOutDate: '',
+        guests: '',
       })
       setSelectedBooking(null)
     }
@@ -65,14 +67,13 @@ export default function Bookings() {
     setIsFormOpen(false)
     setSelectedBooking(null)
     setFormData({
-      roomId: '',
-      roomName: '',
+      roomNo: '',
       guestName: '',
       email: '',
-      date: '',
-      startTime: '',
-      endTime: '',
-      attendees: '',
+      phone: '',
+      checkInDate: '',
+      checkOutDate: '',
+      guests: '',
     })
   }
 
@@ -81,66 +82,76 @@ export default function Bookings() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleRoomChange = (e) => {
-    const roomId = e.target.value
-    const room = rooms.find(r => r.id.toString() === roomId)
-    setFormData(prev => ({
-      ...prev,
-      roomId,
-      roomName: room ? room.name : '',
-    }))
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!formData.roomNo || !formData.guestName || !formData.email || !formData.checkInDate || !formData.checkOutDate) {
+      alert('Please fill all required fields')
+      return
+    }
+
     if (selectedBooking) {
-      setBookings(bookings.map(b =>
+      setActiveBookings(activeBookings.map(b =>
         b.id === selectedBooking.id
-          ? { ...b, ...formData, status: 'pending' }
+          ? { ...b, ...formData, status: 'confirmed' }
           : b
       ))
     } else {
-      setBookings([...bookings, {
+      setActiveBookings([...activeBookings, {
         ...formData,
         id: Date.now(),
-        roomId: parseInt(formData.roomId),
-        attendees: parseInt(formData.attendees),
-        status: 'pending',
+        status: 'confirmed',
+        checkInTime: null,
+        checkOutTime: null,
       }])
     }
     closeForm()
   }
 
-  const updateStatus = (id, newStatus) => {
-    setBookings(bookings.map(b =>
-      b.id === id ? { ...b, status: newStatus } : b
+  const checkInGuest = (id) => {
+    const now = new Date()
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+    
+    setActiveBookings(activeBookings.map(b =>
+      b.id === id ? { ...b, status: 'checked-in', checkInTime: timeStr } : b
     ))
   }
 
-  const deleteBooking = (id) => {
-    setBookings(bookings.filter(b => b.id !== id))
+  const checkOutGuest = (id) => {
+    const booking = activeBookings.find(b => b.id === id)
+    if (!booking) return
+
+    const now = new Date()
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+    
+    const checkInDate = new Date(booking.checkInDate)
+    const checkOutDate = new Date(booking.checkOutDate)
+    const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
+    const room = rooms.find(r => r.name === booking.roomNo)
+    const totalCost = room ? `$${nights * room.rate}` : '$0'
+
+    setActiveBookings(activeBookings.filter(b => b.id !== id))
+    setBookingHistory([...bookingHistory, {
+      ...booking,
+      status: 'checked-out',
+      checkOutTime: timeStr,
+      totalCost
+    }])
   }
 
-  const filteredBookings = bookings.filter(booking => {
-    const matchesStatus = filterStatus === 'all' || booking.status === filterStatus
-    const matchesSearch = booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      booking.roomName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      booking.email.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesStatus && matchesSearch
-  })
-
-  const getStatusClass = (status) => `status status-${status}`
+  const deleteBooking = (id) => {
+    setActiveBookings(activeBookings.filter(b => b.id !== id))
+  }
 
   return (
     <div className="bookings-management">
       {/* Header */}
       <div className="bookings-header">
         <div className="header-content">
-          <h1>📅 Booking Management</h1>
-          <p>View and manage all room bookings</p>
+          <h1>� Guest Reservations</h1>
+          <p>View and manage guest room bookings and check-ins</p>
         </div>
         <button className="btn btn-primary" onClick={() => openForm()}>
-          + New Booking
+          + Book Room
         </button>
       </div>
 
@@ -157,18 +168,18 @@ export default function Bookings() {
 
               <form onSubmit={handleSubmit} className="booking-form">
                 <div className="form-group">
-                  <label htmlFor="roomId">Room *</label>
+                  <label htmlFor="roomNo">Room *</label>
                   <select
-                    id="roomId"
-                    name="roomId"
-                    value={formData.roomId}
-                    onChange={handleRoomChange}
+                    id="roomNo"
+                    name="roomNo"
+                    value={formData.roomNo}
+                    onChange={handleInputChange}
                     required
                   >
                     <option value="">Select a room</option>
                     {rooms.map(room => (
-                      <option key={room.id} value={room.id}>
-                        {room.name}
+                      <option key={room.id} value={room.name}>
+                        {room.name} (${room.rate}/night)
                       </option>
                     ))}
                   </select>
@@ -187,69 +198,69 @@ export default function Bookings() {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="email">Email *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="e.g., john@example.com"
-                    required
-                  />
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="email">Email *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="e.g., john@example.com"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="e.g., +1-555-0101"
+                    />
+                  </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="date">Date *</label>
+                    <label htmlFor="checkInDate">Check-In Date *</label>
                     <input
                       type="date"
-                      id="date"
-                      name="date"
-                      value={formData.date}
+                      id="checkInDate"
+                      name="checkInDate"
+                      value={formData.checkInDate}
                       onChange={handleInputChange}
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="attendees">Attendees *</label>
+                    <label htmlFor="checkOutDate">Check-Out Date *</label>
                     <input
-                      type="number"
-                      id="attendees"
-                      name="attendees"
-                      value={formData.attendees}
+                      type="date"
+                      id="checkOutDate"
+                      name="checkOutDate"
+                      value={formData.checkOutDate}
                       onChange={handleInputChange}
-                      placeholder="e.g., 10"
-                      min="1"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="startTime">Start Time *</label>
-                    <input
-                      type="time"
-                      id="startTime"
-                      name="startTime"
-                      value={formData.startTime}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="endTime">End Time *</label>
-                    <input
-                      type="time"
-                      id="endTime"
-                      name="endTime"
-                      value={formData.endTime}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
+                <div className="form-group">
+                  <label htmlFor="guests">Number of Guests *</label>
+                  <input
+                    type="number"
+                    id="guests"
+                    name="guests"
+                    value={formData.guests}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 2"
+                    min="1"
+                    required
+                  />
                 </div>
 
                 <div className="form-actions">
@@ -257,7 +268,7 @@ export default function Bookings() {
                     Cancel
                   </button>
                   <button type="submit" className="btn btn-primary">
-                    {selectedBooking ? 'Update Booking' : 'Create Booking'}
+                    {selectedBooking ? 'Update Booking' : 'Book Room'}
                   </button>
                 </div>
               </form>
@@ -265,53 +276,46 @@ export default function Bookings() {
           </div>
         )}
 
-        {/* Bookings Section */}
+        {/* Active Bookings Section */}
         <div className="bookings-section">
           <div className="section-header">
-            <h2>📋 All Bookings ({filteredBookings.length})</h2>
+            <h2>📋 Active Bookings ({activeBookings.length})</h2>
             <div className="filters">
               <input
                 type="text"
-                placeholder="Search by name, room, or email..."
+                placeholder="Search guest name or room..."
                 className="search-input"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <select
-                className="filter-select"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
             </div>
           </div>
 
           {/* Bookings Table */}
           <div className="bookings-container">
-            {filteredBookings.length === 0 ? (
+            {activeBookings.length === 0 ? (
               <div className="empty-state">
-                <p>No bookings found. Create your first booking to get started.</p>
+                <p>No active bookings. Create a new booking to get started.</p>
               </div>
             ) : (
               <div className="bookings-table-wrapper">
                 <table className="bookings-table">
                   <thead>
                     <tr>
-                      <th>Guest Name</th>
+                      <th>Guest</th>
                       <th>Room</th>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Attendees</th>
+                      <th>Check-In</th>
+                      <th>Check-Out</th>
+                      <th>Guests</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredBookings.map(booking => (
+                    {activeBookings.filter(booking =>
+                      booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      booking.roomNo.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).map(booking => (
                       <tr key={booking.id} className="booking-row">
                         <td className="guest-cell">
                           <div className="guest-info">
@@ -319,25 +323,42 @@ export default function Bookings() {
                             <div className="guest-email">{booking.email}</div>
                           </div>
                         </td>
-                        <td>{booking.roomName}</td>
-                        <td>{new Date(booking.date).toLocaleDateString()}</td>
-                        <td>{`${booking.startTime} - ${booking.endTime}`}</td>
-                        <td className="attendees-cell">
-                          <span className="attendees-badge">{booking.attendees}</span>
+                        <td>{booking.roomNo}</td>
+                        <td>
+                          <div className="date-info">
+                            <div>{new Date(booking.checkInDate).toLocaleDateString()}</div>
+                            {booking.checkInTime && <div className="time-info">✓ {booking.checkInTime}</div>}
+                          </div>
+                        </td>
+                        <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+                        <td className="guests-cell">
+                          <span className="badge">{booking.guests}</span>
                         </td>
                         <td>
-                          <select
-                            className={getStatusClass(booking.status)}
-                            value={booking.status}
-                            onChange={(e) => updateStatus(booking.id, e.target.value)}
-                          >
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="cancelled">Cancelled</option>
-                          </select>
+                          <span className={`status status-${booking.status}`}>
+                            {booking.status === 'confirmed' ? '⏳ Confirmed' : '✓ Checked In'}
+                          </span>
                         </td>
                         <td>
                           <div className="booking-actions">
+                            {booking.status === 'confirmed' && (
+                              <button
+                                className="btn btn-small btn-success"
+                                onClick={() => checkInGuest(booking.id)}
+                                title="Check-in guest"
+                              >
+                                Check-In
+                              </button>
+                            )}
+                            {booking.status === 'checked-in' && (
+                              <button
+                                className="btn btn-small btn-warning"
+                                onClick={() => checkOutGuest(booking.id)}
+                                title="Check-out guest"
+                              >
+                                Check-Out
+                              </button>
+                            )}
                             <button
                               className="btn-icon btn-edit"
                               onClick={() => openForm(booking)}
@@ -361,6 +382,78 @@ export default function Bookings() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Booking History Section */}
+        <div className="bookings-section">
+          <div className="section-header">
+            <h2>📜 Booking History</h2>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              {showHistory ? '▼ Hide' : '▶ Show'} ({bookingHistory.length})
+            </button>
+          </div>
+
+          {showHistory && (
+            <div className="bookings-container">
+              {bookingHistory.length === 0 ? (
+                <div className="empty-state">
+                  <p>No booking history yet.</p>
+                </div>
+              ) : (
+                <div className="bookings-table-wrapper">
+                  <table className="bookings-table">
+                    <thead>
+                      <tr>
+                        <th>Guest</th>
+                        <th>Room</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Duration</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookingHistory.map(booking => {
+                        const nights = Math.ceil(
+                          (new Date(booking.checkOutDate) - new Date(booking.checkInDate)) / (1000 * 60 * 60 * 24)
+                        )
+                        return (
+                          <tr key={booking.id} className="booking-row history-row">
+                            <td className="guest-cell">
+                              <div className="guest-info">
+                                <div className="guest-name">{booking.guestName}</div>
+                                <div className="guest-email">{booking.email}</div>
+                              </div>
+                            </td>
+                            <td>{booking.roomNo}</td>
+                            <td>
+                              <div className="date-info">
+                                <div>{new Date(booking.checkInDate).toLocaleDateString()}</div>
+                                <div className="time-info">{booking.checkInTime}</div>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="date-info">
+                                <div>{new Date(booking.checkOutDate).toLocaleDateString()}</div>
+                                <div className="time-info">{booking.checkOutTime}</div>
+                              </div>
+                            </td>
+                            <td className="duration-cell">
+                              {nights} {nights === 1 ? 'night' : 'nights'}
+                            </td>
+                            <td className="total-cell">{booking.totalCost}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

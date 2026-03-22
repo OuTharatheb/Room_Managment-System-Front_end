@@ -39,8 +39,8 @@ export default function Settings() {
       {/* Header */}
       <div className="settings-header">
         <div className="header-content">
-          <h1>⚙️ Settings</h1>
-          <p>Configure your room management system</p>
+          <h1>⚙️ Hotel Configuration</h1>
+          <p>Configure hotel settings and preferences</p>
         </div>
       </div>
 

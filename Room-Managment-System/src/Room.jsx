@@ -3,12 +3,12 @@ import './Room.css'
 
 export default function Room() {
   const [rooms, setRooms] = useState([
-    { id: 1, name: 'Conference Room A', capacity: 20, status: 'available', floor: '1st', amenities: ['Projector', 'Whiteboard', 'WiFi'] },
-    { id: 2, name: 'Conference Room B', capacity: 15, status: 'booked', floor: '1st', amenities: ['TV Screen', 'WiFi', 'Video Conference'] },
-    { id: 3, name: 'Meeting Room 101', capacity: 8, status: 'available', floor: '2nd', amenities: ['Whiteboard', 'WiFi'] },
-    { id: 4, name: 'Meeting Room 102', capacity: 6, status: 'maintenance', floor: '2nd', amenities: ['WiFi'] },
-    { id: 5, name: 'Board Room', capacity: 30, status: 'booked', floor: '3rd', amenities: ['Projector', 'TV Screen', 'WiFi', 'Video Conference'] },
-    { id: 6, name: 'Training Room', capacity: 50, status: 'available', floor: '3rd', amenities: ['Projector', 'WiFi', 'Microphone'] },
+    { id: 1, name: 'Single Room 101', capacity: 1, status: 'available', floor: '1st', amenities: ['WiFi', 'AC', 'TV'] },
+    { id: 2, name: 'Single Room 102', capacity: 1, status: 'booked', floor: '1st', amenities: ['WiFi', 'AC', 'TV'] },
+    { id: 3, name: 'Double Room 201', capacity: 2, status: 'available', floor: '2nd', amenities: ['WiFi', 'AC', 'TV', 'Minibar'] },
+    { id: 4, name: 'Double Room 202', capacity: 2, status: 'maintenance', floor: '2nd', amenities: ['WiFi', 'AC', 'TV'] },
+    { id: 5, name: 'Suite 301', capacity: 3, status: 'booked', floor: '3rd', amenities: ['WiFi', 'AC', 'TV', 'Minibar', 'Safe', 'Workspace'] },
+    { id: 6, name: 'Suite 302', capacity: 3, status: 'available', floor: '3rd', amenities: ['WiFi', 'AC', 'TV', 'Minibar', 'Safe'] },
   ])
 
   const [selectedRoom, setSelectedRoom] = useState(null)
@@ -82,18 +82,18 @@ export default function Room() {
     ))
   }
 
-  const amenitiesOptions = ['Projector', 'Whiteboard', 'WiFi', 'TV Screen', 'Video Conference', 'Microphone', 'Air Conditioner']
+  const amenitiesOptions = ['WiFi', 'AC', 'TV', 'Minibar', 'Safe', 'Workspace', 'Bathtub', 'Wake-up Call']
 
   return (
     <div className="room-management">
       {/* Header */}
       <div className="room-header">
         <div className="header-content">
-          <h1>🏢 Room Management</h1>
-          <p>Create, edit, and manage room details</p>
+          <h1>🛏️ Guest Room Management</h1>
+          <p>Manage guest rooms and availability</p>
         </div>
         <button className="btn btn-primary" onClick={() => openForm()}>
-          + Create Room
+          + Add Room
         </button>
       </div>
 
