@@ -513,7 +513,7 @@
   border-radius: 8px;
   font-size: 12px;
   background: var(--code-bg);
-  color: var(--text-h);
+  color: var(--text);
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -523,6 +523,7 @@
   outline: none;
   border-color: #4f46e5;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  background: white;
 }
 
 .room-actions {
