@@ -304,3 +304,42 @@
     font-size: 11px;
   }
 }
+
+/* Harmonized modern overrides */
+.booking-history {
+  background:
+    radial-gradient(circle at 20% -10%, rgba(26, 31, 53, 0.1), transparent 44%),
+    radial-gradient(circle at 95% 0%, rgba(253, 176, 34, 0.14), transparent 38%),
+    linear-gradient(145deg, #f4f7fd 0%, #ffffff 50%, #eef2fb 100%);
+}
+
+.history-header {
+  margin-bottom: 0;
+  background: linear-gradient(132deg, #1a1f35 0%, #273f6a 46%, #fdb022 130%);
+  box-shadow: 0 18px 40px rgba(20, 27, 45, 0.28);
+}
+
+.history-main {
+  width: 100%;
+  margin: 0;
+  padding: 0 18px 40px;
+}
+
+.history-container {
+  border: 1px solid #dce5f3;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(24, 35, 59, 0.08);
+}
+
+.history-table thead tr {
+  background: #f5f8fd;
+  border-bottom-color: #dce5f3;
+}
+
+.history-table tbody tr {
+  border-bottom-color: #edf2fb;
+}
+
+.history-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(253, 176, 34, 0.08) 0%, rgba(253, 176, 34, 0.02) 58%, transparent 100%);
+}

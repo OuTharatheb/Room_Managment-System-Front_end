@@ -320,3 +320,36 @@
     font-size: 13px;
   }
 }
+
+/* Harmonized full-width overrides */
+.settings-main {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 28px 18px 40px;
+}
+
+.settings-content {
+  border: 1px solid #dce5f3;
+  box-shadow: 0 10px 30px rgba(24, 35, 59, 0.08);
+  padding: 24px;
+}
+
+.settings-tabs {
+  border-bottom-color: #dce5f3;
+}
+
+.tab.active {
+  color: #8b5e08;
+  border-bottom-color: #fdb022;
+}
+
+.setting-input:focus,
+.setting-select:focus {
+  border-color: #fdb022;
+  box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.14);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, rgba(253, 176, 34, 0.18) 0%, rgba(253, 176, 34, 0.07) 100%);
+}

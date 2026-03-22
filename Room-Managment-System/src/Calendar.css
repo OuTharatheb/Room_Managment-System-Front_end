@@ -1,34 +1,64 @@
 .calendar-management {
   min-height: 100vh;
-  background: linear-gradient(145deg, #f6f8fc 0%, #ffffff 45%, #eef3fb 100%);
+  background:
+    radial-gradient(circle at 18% -12%, rgba(26, 31, 53, 0.12), transparent 42%),
+    radial-gradient(circle at 95% 0%, rgba(253, 176, 34, 0.18), transparent 36%),
+    linear-gradient(145deg, #f4f7fd 0%, #ffffff 50%, #eef2fb 100%);
 }
 
 .calendar-header {
-  padding: 42px 24px;
-  background: linear-gradient(135deg, #1a1f35 0%, #27345a 52%, #FDB022 130%);
-  color: #ffffff;
+  padding: 44px 24px;
+  background: linear-gradient(132deg, #1a1f35 0%, #273f6a 46%, #fdb022 130%);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  box-shadow: 0 18px 40px rgba(20, 27, 45, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+
+.calendar-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.12) 55%, transparent 75%);
+  transform: translateX(-60%);
+  animation: calendarSheen 9s linear infinite;
+}
+
+@keyframes calendarSheen {
+  from { transform: translateX(-65%); }
+  to { transform: translateX(120%); }
 }
 
 .calendar-header h1 {
   margin: 0;
-  color: #ffffff;
+  color: #fff;
   font-size: 36px;
   font-weight: 800;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .calendar-header p {
   margin-top: 8px;
-  opacity: 0.9;
+  opacity: 0.92;
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-actions {
+  position: relative;
+  z-index: 1;
 }
 
 .btn-calendar {
   border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.16);
   color: #fff;
   padding: 10px 18px;
   border-radius: 10px;
@@ -38,51 +68,53 @@
 }
 
 .btn-calendar:hover {
-  background: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.28);
   transform: translateY(-1px);
 }
 
 .calendar-layout {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 34px 22px;
+  max-width: none;
+  margin: 0;
+  width: 100%;
+  padding: 34px 22px 44px;
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 2.1fr) minmax(290px, 1fr);
+  gap: 22px;
 }
 
 .calendar-panel,
 .availability-panel {
-  background: #ffffff;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #dce5f3;
   border-radius: 16px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(24, 35, 59, 0.08);
 }
 
 .calendar-panel {
-  padding: 22px;
+  padding: 20px;
 }
 
 .calendar-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .calendar-toolbar h2 {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
+  color: #13203d;
 }
 
 .month-nav {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--accent-border);
+  border: 1px solid #ffd899;
   border-radius: 10px;
-  background: var(--accent-bg);
-  color: #8B5E08;
+  background: #fff4da;
+  color: #8b5e08;
   font-size: 18px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -90,20 +122,20 @@
 
 .month-nav:hover {
   transform: translateY(-1px);
-  background: #ffe6b1;
+  background: #ffeac0;
 }
 
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .calendar-weekdays div {
   text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  color: #5f6f89;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -115,14 +147,14 @@
 }
 
 .day-cell {
-  border: 1px solid var(--border);
+  border: 1px solid #dce5f3;
   border-radius: 12px;
   min-height: 74px;
-  background: #ffffff;
+  background: #fff;
   text-align: left;
   padding: 10px;
   cursor: pointer;
-  color: var(--text-h);
+  color: #182544;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -132,7 +164,7 @@
 
 .day-cell:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 18px rgba(24, 37, 68, 0.08);
 }
 
 .day-cell.muted {
@@ -140,35 +172,35 @@
 }
 
 .day-cell.checkin {
-  border-color: #0ea5a4;
-  background: linear-gradient(145deg, #ecfdf5, #ffffff);
+  border-color: #9ce8ca;
+  background: linear-gradient(145deg, #ecfff6, #ffffff);
 }
 
 .day-cell.occupied {
-  border-color: #f59e0b;
-  background: linear-gradient(145deg, #fffbeb, #ffffff);
+  border-color: #ffd58f;
+  background: linear-gradient(145deg, #fff8ea, #ffffff);
 }
 
 .day-cell.checkout {
-  border-color: #3b82f6;
-  background: linear-gradient(145deg, #eff6ff, #ffffff);
+  border-color: #bcd9ff;
+  background: linear-gradient(145deg, #f1f7ff, #ffffff);
 }
 
 .day-cell.available {
-  border-color: #d9e3f4;
+  border-color: #dce5f3;
 }
 
 .day-cell.selected {
-  box-shadow: inset 0 0 0 2px #1a1f35;
+  box-shadow: inset 0 0 0 2px #273f6a;
 }
 
 .calendar-legend {
-  margin-top: 18px;
+  margin-top: 16px;
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  color: var(--text);
-  font-size: 13px;
+  color: #5f6f89;
+  font-size: 12px;
 }
 
 .calendar-legend div {
@@ -184,35 +216,39 @@
   display: inline-block;
 }
 
-.dot-checkin { background: #0ea5a4; }
+.dot-checkin { background: #0ea872; }
 .dot-occupied { background: #f59e0b; }
 .dot-checkout { background: #3b82f6; }
-.dot-available { background: #d9e3f4; }
+.dot-available { background: #dce5f3; }
 
 .availability-panel {
-  padding: 24px;
+  padding: 22px;
   text-align: left;
 }
 
 .availability-panel h3 {
   margin: 0;
-  color: var(--text-h);
+  color: #13203d;
+  font-size: 22px;
 }
 
 .panel-subtitle {
   margin-top: 6px;
-  color: var(--text);
+  color: #5f6f89;
 }
 
 .availability-section {
-  margin-top: 20px;
-  border-top: 1px solid var(--border);
-  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid #e8eef8;
+  padding-top: 16px;
 }
 
 .availability-section h4 {
-  margin: 0 0 10px 0;
-  color: var(--text-h);
+  margin: 0 0 10px;
+  color: #22304f;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .availability-section ul {
@@ -220,11 +256,11 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 10px;
+  gap: 9px;
 }
 
 .availability-section li {
-  border: 1px solid var(--border);
+  border: 1px solid #dce5f3;
   border-radius: 10px;
   padding: 10px;
   background: #fbfdff;
@@ -236,12 +272,12 @@
 
 .availability-section li strong {
   display: block;
-  color: var(--text-h);
+  color: #182544;
   font-size: 14px;
 }
 
 .availability-section li span {
-  color: var(--text);
+  color: #5f6f89;
   font-size: 13px;
 }
 
@@ -267,47 +303,47 @@
 }
 
 .action-checkin {
-  background: #10b981;
-  color: #ffffff;
+  background: #0ea872;
+  color: #fff;
 }
 
 .action-checkin:hover {
-  background: #059669;
+  background: #0b8f62;
 }
 
 .action-checkout {
   background: #f59e0b;
-  color: #ffffff;
+  color: #fff;
 }
 
 .action-checkout:hover {
-  background: #d97706;
+  background: #d17f00;
 }
 
 .action-edit {
-  background: #ffe8b8;
-  color: #8B5E08;
-  border-color: #f7cc74;
+  background: #fff4da;
+  color: #8b5e08;
+  border-color: #ffd58f;
 }
 
 .action-edit:hover {
-  background: #ffdfa0;
+  background: #ffeac0;
 }
 
 .available-room {
-  color: #065f46;
+  color: #0b6b4a;
   font-weight: 600;
 }
 
 .empty {
-  color: var(--text);
+  color: #5f6f89;
   margin: 0;
 }
 
 .calendar-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(9, 13, 24, 0.5);
+  background: rgba(9, 13, 24, 0.52);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,9 +356,9 @@
   width: 100%;
   max-width: 460px;
   border-radius: 14px;
-  border: 1px solid var(--border);
-  background: #ffffff;
-  box-shadow: var(--shadow-xl);
+  border: 1px solid #dce5f3;
+  background: #fff;
+  box-shadow: 0 24px 56px rgba(19, 28, 49, 0.25);
   padding: 24px;
   text-align: left;
   animation: calendarModalIn 0.18s ease;
@@ -330,13 +366,13 @@
 
 .calendar-modal h3 {
   margin: 0;
-  color: var(--text-h);
+  color: #13203d;
   font-size: 22px;
 }
 
 .calendar-modal p {
   margin-top: 10px;
-  color: var(--text);
+  color: #5f6f89;
 }
 
 .calendar-modal-actions {
@@ -374,12 +410,16 @@
 }
 
 @media (max-width: 560px) {
+  .calendar-header {
+    padding: 34px 18px;
+  }
+
   .calendar-header h1 {
     font-size: 28px;
   }
 
   .calendar-layout {
-    padding: 20px 12px;
+    padding: 22px 12px 30px;
   }
 
   .calendar-panel,

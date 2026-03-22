@@ -1,3 +1,6 @@
+html{
+  scroll-behavior: smooth;
+}
 .app-container {
   display: flex;
   min-height: 100vh;
@@ -32,5 +35,11 @@
 @media (max-width: 480px) {
   .app-main {
     margin-left: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    margin-left: 220px;
   }
 }
