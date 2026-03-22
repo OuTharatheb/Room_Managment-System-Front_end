@@ -3,6 +3,9 @@ import "./Home.css";
 
 export default function Home() {
   const [bookingsVersion, setBookingsVersion] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
   useEffect(() => {
     const onBookingsUpdated = () => setBookingsVersion((v) => v + 1);
@@ -101,6 +104,26 @@ export default function Home() {
     return "🛏️";
   };
 
+  const getRoomType = (roomName) => {
+    if (roomName.includes("Single")) return "single";
+    if (roomName.includes("Double")) return "double";
+    if (roomName.includes("Suite")) return "suite";
+    return "other";
+  };
+
+  const filteredRooms = rooms.filter((room) => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const matchesSearch =
+      normalizedSearch === "" ||
+      room.name.toLowerCase().includes(normalizedSearch);
+    const matchesStatus =
+      selectedStatus === "" || room.status === selectedStatus;
+    const matchesType =
+      selectedType === "" || getRoomType(room.name) === selectedType;
+
+    return matchesSearch && matchesStatus && matchesType;
+  });
+
   return (
     <div className="home">
       {/* Header */}
@@ -148,8 +171,14 @@ export default function Home() {
                 type="text"
                 placeholder="Search rooms..."
                 className="search-input"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <select className="filter-select">
+              <select
+                className="filter-select"
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+              >
                 <option value="">All Status</option>
                 <option value="available">Available</option>
                 <option value="booked">Booked</option>
@@ -161,7 +190,7 @@ export default function Home() {
           {/* Rooms Table */}
           <div className="rooms-container">
             <div className="rooms-list">
-              {rooms.map((room) => (
+              {filteredRooms.map((room) => (
                 <div key={room.id} className="room-card">
                   <div className="room-header">
                     <div>
@@ -200,6 +229,11 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+              {filteredRooms.length === 0 && (
+                <p className="no-rooms-message">
+                  No rooms match your search, room type, and status filters.
+                </p>
+              )}
             </div>
           </div>
         </section>

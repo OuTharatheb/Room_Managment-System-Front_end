@@ -187,7 +187,7 @@
   border-radius: 10px;
   font-size: 14px;
   background: var(--code-bg);
-  color: var(--text-h);
+  color: var(--text);
   font-family: var(--sans);
   transition: all 0.2s ease;
 }
