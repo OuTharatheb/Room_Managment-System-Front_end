@@ -82,7 +82,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: rgb(166, 158, 247);
   border-radius: 16px;
   max-width: 500px;
   width: 100%;
@@ -109,7 +109,7 @@
   align-items: center;
   padding: 28px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #4b39eb 0%, #f13295 100%);
 }
 
 .modal-header h2 {
@@ -183,7 +183,7 @@
   outline: none;
   border-color: #FDB022;
   box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.1);
-  background: white;
+  background: var(--code-bg);
 }
 
 .form-row {
@@ -386,7 +386,7 @@
 }
 
 .bookings-table thead {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #2384e4 0%, #4ea2f6 100%);
   border-bottom: 2px solid var(--border);
 }
 
@@ -422,7 +422,7 @@
 
 .bookings-table td {
   padding: 18px 16px;
-  color: var(--text-h);
+  color: black;
 }
 
 .guest-cell {
@@ -528,7 +528,7 @@
 
 .date-info div {
   font-weight: 600;
-  color: var(--text-h);
+  color: black;
 }
 
 .time-info {

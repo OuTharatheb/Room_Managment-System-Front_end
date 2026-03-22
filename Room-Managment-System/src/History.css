@@ -86,6 +86,7 @@
   font-size: 14px;
   font-family: inherit;
   transition: all 0.3s ease;
+  
 }
 
 .search-input {
@@ -98,10 +99,16 @@
   outline: none;
   border-color: #FDB022;
   box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.1);
+  color: #333;
 }
 
 .filter-select {
   min-width: 150px;
+  color: rgb(201, 199, 199);
+}
+
+.filter-select option {
+  color: #333;
 }
 
 /* History Container */

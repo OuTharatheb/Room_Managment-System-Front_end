@@ -5,7 +5,7 @@
 
 /* Header */
 .home-header {
-  background: linear-gradient(135deg, #8B7355 0%, #FDB022 50%, #8B7355 100%);
+  background: linear-gradient(135deg, #8b7355 0%, #fdb022 50%, #8b7355 100%);
   color: white;
   padding: 48px 20px;
   box-shadow: var(--shadow-2xl);
@@ -14,13 +14,17 @@
 }
 
 .home-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: -50%;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -62,7 +66,7 @@
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 28px;
-  color: var(--text-h);
+  color: gray;
   letter-spacing: -0.5px;
 }
 
@@ -88,13 +92,13 @@
 }
 
 .stat-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #FDB022, transparent);
+  background: linear-gradient(90deg, #fdb022, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -102,7 +106,7 @@
 .stat-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  border-color: #FDB022;
+  border-color: #fdb022;
 }
 
 .stat-card:hover::before {
@@ -110,11 +114,17 @@
 }
 
 .stat-icon {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 12px;
-  opacity: 0.12;
+  opacity: 1;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .stat-content {
@@ -216,14 +226,20 @@
 }
 
 .room-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -100%;
   left: -100%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.05) 0%, transparent 70%);
-  transition: top 0.4s ease, left 0.4s ease;
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.05) 0%,
+    transparent 70%
+  );
+  transition:
+    top 0.4s ease,
+    left 0.4s ease;
 }
 
 .room-card:hover {
@@ -267,17 +283,29 @@
 }
 
 .status-available {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.15) 0%,
+    rgba(16, 185, 129, 0.05) 100%
+  );
   color: #047857;
 }
 
 .status-booked {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.15) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
   color: #b45309;
 }
 
 .status-maintenance {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.15) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
   color: #b91c1c;
 }
 
@@ -334,7 +362,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
+  background: linear-gradient(135deg, #fdb022 0%, #d4a01f 100%);
   color: white;
   padding: 10px 24px;
   font-size: 14px;
@@ -356,7 +384,11 @@
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
   transform: translateY(-2px);
 }
 
