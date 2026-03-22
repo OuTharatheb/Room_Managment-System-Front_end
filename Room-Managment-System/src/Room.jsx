@@ -144,7 +144,7 @@ export default function Room() {
 
               <form onSubmit={handleSubmit} className="room-form">
                 <div className="form-group">
-                  <label htmlFor="name">Room Name *</label>
+                  <label htmlFor="name">Room Name</label>
                   <input
                     type="text"
                     id="name"
@@ -158,7 +158,7 @@ export default function Room() {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="capacity">Capacity *</label>
+                    <label htmlFor="capacity">Capacity</label>
                     <input
                       type="number"
                       id="capacity"
@@ -171,7 +171,7 @@ export default function Room() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="floor">Floor *</label>
+                    <label htmlFor="floor">Floor</label>
                     <input
                       type="text"
                       id="floor"

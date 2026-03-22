@@ -259,7 +259,7 @@ export default function Bookings() {
 
               <form onSubmit={handleSubmit} className="booking-form">
                 <div className="form-group">
-                  <label htmlFor="roomNo">Room * 
+                  <label htmlFor="roomNo">Room 
                     {formData.checkInDate && formData.checkOutDate && (
                       <span style={{ fontSize: '12px', marginLeft: '8px' }}>
                         ({getAvailableRooms().length} available)
@@ -287,7 +287,7 @@ export default function Bookings() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="guestName">Guest Name *</label>
+                  <label htmlFor="guestName">Guest Name</label>
                   <input
                     type="text"
                     id="guestName"
@@ -301,7 +301,7 @@ export default function Bookings() {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="email">Email *</label>
+                    <label htmlFor="email">Email</label>
                     <input
                       type="email"
                       id="email"
@@ -327,7 +327,7 @@ export default function Bookings() {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="checkInDate">Check-In Date *</label>
+                    <label htmlFor="checkInDate">Check-In Date</label>
                     <input
                       type="date"
                       id="checkInDate"
@@ -338,7 +338,7 @@ export default function Bookings() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="checkOutDate">Check-Out Date *</label>
+                    <label htmlFor="checkOutDate">Check-Out Date</label>
                     <input
                       type="date"
                       id="checkOutDate"
@@ -351,7 +351,7 @@ export default function Bookings() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="guests">Number of Guests *</label>
+                  <label htmlFor="guests">Number of Guests</label>
                   <input
                     type="number"
                     id="guests"

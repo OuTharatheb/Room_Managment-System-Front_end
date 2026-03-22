@@ -121,7 +121,7 @@
   margin: 0 0 28px 0;
   font-size: 24px;
   font-weight: 700;
-  color: var(--text-h);
+  color: var(--text);
   letter-spacing: -0.5px;
 }
 
@@ -139,8 +139,8 @@
 
 .setting-group label {
   margin-bottom: 10px;
-  font-weight: 700;
-  color: var(--text-h);
+  font-weight: 500;
+  color: grey;
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -177,6 +177,7 @@
   border-color: #4a5568;
   box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
   background: white;
+  color: #333;
 }
 
 .setting-group small {
