@@ -4,6 +4,9 @@ export default function Sidebar({ currentPage, setCurrentPage }) {
   const menuItems = [
     { id: 'bookings', label: 'Book Guest Room', icon: '📅' },
     { id: 'rooms', label: 'View Rooms', icon: '🏢' },
+    { id: 'home', label: 'Dashboard', icon: '📊' },
+    { id: 'reports', label: 'Reports', icon: '📈' },
+    { id: 'settings', label: 'Settings', icon: '⚙️' },
   ]
 
   return (
