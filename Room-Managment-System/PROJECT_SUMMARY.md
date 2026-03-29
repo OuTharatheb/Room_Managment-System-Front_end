@@ -1,135 +1,127 @@
-# Room Management System - Project Summary
+# Room Management System - Updated Project Report
 
-## Overview
-Room Management System is a front-desk operations app built with React and Vite. It handles room management, booking workflows, check-in/check-out actions, history tracking, and calendar-based availability monitoring.
+Date: March 29, 2026
 
-## Highlighted: What Is Used
-- **React features used:** `useState`, `useEffect`, conditional rendering, mapped lists, event handlers, prop passing.
-- **Browser APIs used:** `localStorage`, `CustomEvent`, `window.dispatchEvent`, `Date`.
-- **Tooling used:** Vite, ESLint.
-- **Styling approach used:** Feature-scoped CSS files + shared global tokens.
-- **Data strategy used:** Client-side state with local persistence (no backend yet).
+## Executive Summary
+Room Management System is a React + Vite front-desk application for handling room reservations, occupancy tracking, check-in/check-out workflows, calendar-based operations, and post-stay history.
 
-## Architecture Snapshot
-- **Framework:** React
-- **Build Tool:** Vite
-- **State Pattern:** Local component state + browser storage
-- **Persistence:** `localStorage` (`activeBookings`, `bookingHistory`)
-- **Cross-Component Sync:** Custom browser events (`bookings-updated`, `navigate-page`)
+The current build is a functional frontend prototype with client-side persistence. Core workflows are implemented and synchronized across modules using localStorage plus browser custom events.
 
-## Component Lessons
+## Tech Stack
+- Frontend: React 19
+- Build and Dev Server: Vite 8
+- Linting: ESLint 9
+- Language: JavaScript (ES modules)
+- Styling: Component/page-level CSS files with shared global styles
 
-### `App.jsx`
-**Lesson: Lightweight page routing for internal dashboards**
-- Uses a single `currentPage` state with switch-based rendering.
-- Keeps page-level control centralized and easy to extend.
-- Works well for compact tools where full router setup is not yet required.
-- **Used:** `useState`, conditional rendering, component composition.
+## Implemented Modules and Behavior
 
-### `Sidebar.jsx`
-**Lesson: Data-driven navigation design**
-- Menu options are defined in an array for easy updates.
-- Active-state feedback improves navigation clarity.
-- Combines branding, navigation, and profile context in one reusable shell.
-- **Used:** array mapping for nav items, click handlers, active state styling.
+### 1) App Shell and Navigation
+- App-level page navigation is state-based (`currentPage`) with switch rendering.
+- Sidebar navigation uses a data-driven menu and active-page highlight.
+- Cross-module page jump is implemented through a custom event (`navigate-page`).
 
-### `Home.jsx`
-**Lesson: Summary-first dashboard UX**
-- Emphasizes high-value operational information at a glance.
-- Uses card-based composition to keep scanning fast.
-- Supports the receptionist workflow with quick visual status cues.
-- **Used:** dashboard cards, derived display values, layout-first UI composition.
+### 2) Bookings (Core Transaction Module)
+- Supports create, edit, delete, check-in, and check-out actions.
+- Validations include required fields and check-out after check-in.
+- Prevents date overlap for the same room against both active bookings and historical records.
+- Persists data in:
+	- `activeBookings`
+	- `bookingHistory`
+- On every booking mutation, dispatches `bookings-updated` to refresh dependent screens.
+- Includes search filtering and embedded history table toggle.
 
-### `Room.jsx`
-**Lesson: CRUD plus derived room occupancy status**
-- Handles room create, update, and delete operations.
-- Derives room occupancy state from booking data events.
-- Separates editable metadata (room details) from live occupancy behavior.
-- **Used:** form state handling, CRUD actions, `bookings-updated` event listeners.
+### 3) Calendar (Operational Day View)
+- Renders a 6x7 month grid with day status markers:
+	- `checkin`
+	- `occupied`
+	- `checkout`
+	- `available`
+- Shows selected-day occupancy and available rooms.
+- Provides inline actions:
+	- Check-In
+	- Check-Out (with confirmation modal)
+	- Edit booking (handoff to Bookings page)
 
-### `Bookings.jsx`
-**Lesson: Validation and booking integrity rules**
-- Validates required fields and date ordering.
-- Prevents overlapping reservations for the same room.
-- Persists active/history records and emits updates for other modules.
-- Implements check-in/check-out transitions with basic billing total logic.
-- **Used:** `useState`, `useEffect`, form validation, overlap checks, `localStorage`, custom events, date arithmetic.
+### 4) Rooms
+- Maintains editable room metadata (name, capacity, floor, amenities).
+- Supports add/edit/delete room operations.
+- Derives runtime occupancy status from active bookings (`booked`, `checked-in`) except rooms set to `maintenance`.
+- Prevents manual status overrides while booking-controlled states are active.
 
-### `Calendar.jsx`
-**Lesson: Time-based UI with direct operational actions**
-- Displays month-grid occupancy status (`check-in`, `occupied`, `check-out`, `available`).
-- Shows day-level room availability and booked guests.
-- Allows quick actions (check-in, check-out, edit booking) directly from date context.
-- Uses a custom confirmation modal for safer checkout actions.
-- **Used:** calendar grid logic, date comparisons, booking status badges, contextual action triggers.
+### 5) Home Dashboard
+- Displays operational summary cards:
+	- Total rooms
+	- Available
+	- Booked
+	- Guests
+- Reads latest booking data via event-based refresh.
+- Includes searchable room card list.
 
-### `History.jsx`
-**Lesson: Read-optimized audit views**
-- Stores completed stays as historical records.
-- Supports traceability for timing and cost outcomes.
-- Keeps historical data flow separate from active booking operations.
-- **Used:** table/list rendering, historical filtering patterns, read-only presentation.
+### 6) Guests
+- Builds a guest directory from active + historical bookings.
+- Deduplicates guest profiles by normalized name/email/phone key.
+- Computes profile metrics:
+	- Total visits
+	- Last stay
+	- Member since
+- Classifies guest tier:
+	- New
+	- Regular
+	- VIP
 
-### `Guest.jsx`
-**Lesson: Feature modularity for domain separation**
-- Keeps guest-specific concerns separate from booking mechanics.
-- Supports future expansion of profile-level features without coupling.
-- **Used:** modular component boundaries and feature-scoped styles.
+### 7) History
+- Loads historical check-out records from `bookingHistory`.
+- Computes derived fields:
+	- Duration (nights)
+	- Revenue totals
+	- Average stay
+- Supports filtering by guest search and room.
 
-### `Settings.jsx`
-**Lesson: Configurable behavior in one control surface**
-- Centralizes system-level preferences and options.
-- Improves maintainability by isolating settings from transactional screens.
-- **Used:** grouped setting controls, centralized preference UI patterns.
+### 8) Settings
+- Includes tabbed settings UI for general, booking, notifications, and display options.
+- Current behavior is UI-state only (no persistence layer for settings yet).
 
-## Styling Lessons
+## Data and Synchronization Model
 
-### `App.css` + `Sidebar.css`
-**Lesson: Stable application shell layout**
-- Fixed sidebar with a scrollable content region.
-- Responsive behavior ensures usability on smaller screens.
+### Persistence Keys
+- `activeBookings`
+- `bookingHistory`
+- `pendingBookingEditId` (calendar-to-bookings edit handoff)
 
-### Feature CSS files (`Bookings.css`, `Room.css`, `Calendar.css`, `Home.css`, `Guest.css`, `History.css`, `Settings.css`)
-**Lesson: Scoped styling by feature module**
-- Reduces style collision risk between pages.
-- Makes feature-level visual iteration safer and faster.
+### Sync Mechanisms
+- `window.dispatchEvent(new CustomEvent('bookings-updated'))`
+- `window.addEventListener('bookings-updated', ...)`
+- `window.addEventListener('storage', ...)`
 
-### `index.css`
-**Lesson: Global tokens and baseline consistency**
-- Defines shared color, typography, and spacing variables.
-- Provides consistent defaults for app-wide rendering behavior.
-- **Used:** CSS variables/tokens, base reset, global typography and spacing rules.
+This model keeps modules loosely coupled while enabling near real-time UI updates across tabs and pages.
 
-## Data and Event Flow Lessons
-- `localStorage` can be effective for prototype-level persistence.
-- Custom events provide a lightweight alternative to global state libraries for small apps.
-- Derived views (`Room`, `Calendar`) react to booking events rather than duplicating business rules.
+## Current Strengths
+- End-to-end reservation lifecycle is implemented.
+- Calendar and booking tables are operationally connected.
+- Guest and history views are data-driven from real activity.
+- Architecture is modular and readable for frontend-only iteration.
 
-## Quick Reference Table (What Is Used)
+## Known Limitations
+- No backend or API integration; all data is local to browser storage.
+- No authentication/authorization model.
+- No automated tests currently included.
+- Settings are not persisted.
+- Currency and date handling are fixed/simple and not locale-aware.
+- Some data is duplicated in module-level constants (rooms/rates), which can drift over time.
 
-| Module | What Is Used | Why It Matters |
-| --- | --- | --- |
-| `App.jsx` | `useState`, conditional rendering | Simple internal page routing without React Router |
-| `Sidebar.jsx` | Menu array mapping, click handlers | Easy-to-maintain navigation with active feedback |
-| `Home.jsx` | Summary cards, derived metrics | Fast operational overview for front-desk work |
-| `Room.jsx` | Form state, CRUD logic, custom event listening | Room management stays synced with booking changes |
-| `Bookings.jsx` | `useState`, `useEffect`, validation, overlap checks, `localStorage` | Core booking integrity and check-in/check-out workflow |
-| `Calendar.jsx` | Date grid logic, status mapping, action triggers | Visual occupancy and daily action control |
-| `History.jsx` | Read-only table rendering, history data display | Clear audit trail of completed stays |
-| `Guest.jsx` | Feature separation, scoped styles | Keeps guest domain concerns modular |
-| `Settings.jsx` | Grouped settings UI patterns | Centralized system preference control |
-| `App.css` + `Sidebar.css` | Shell layout and responsive sidebar behavior | Stable full app structure |
-| Feature CSS files | Per-feature scoped styling | Lower style collision and safer iterations |
-| `index.css` | CSS tokens and global defaults | Consistent typography, spacing, and theming |
+## Risk Notes
+- `localStorage` can be cleared by the browser/user, causing data loss.
+- Multi-user scenarios are not supported in current architecture.
+- Business rules are distributed across components rather than centralized domain utilities.
 
-## Current Status
-- Booking edit handoff has been stabilized to avoid synchronous state updates in effects.
-- Calendar actions and booking workflows are integrated.
-- The project builds successfully and is ready for backend integration.
+## Recommended Next Phase
+1. Introduce a backend API and move booking/history/rooms to server persistence.
+2. Extract shared domain utilities (date overlap, pricing, status transitions) into common modules.
+3. Add automated tests for overlap validation, check-in/out transitions, and calendar status mapping.
+4. Persist settings and unify configuration across modules.
+5. Optionally migrate to route-based navigation for deep links and browser history behavior.
 
-## Suggested Next Steps
-1. Add backend APIs and replace `localStorage` with server persistence.
-2. Introduce React Router for deep-linking and browser history support.
-3. Add automated tests for overlap checks and state transitions.
-4. Centralize date/cost helpers in shared utility modules.
+## Overall Status
+Frontend prototype is feature-complete for single-operator demo use and is ready for backend integration and test hardening.
 
