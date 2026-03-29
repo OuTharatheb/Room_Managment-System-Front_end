@@ -61,8 +61,8 @@
 
 .bookings-main {
   width: 100%;
-  max-width: none;
-  margin: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 26px 16px 38px;
   display: grid;
   gap: 18px;
@@ -389,6 +389,15 @@
   padding: 14px 14px;
   border-bottom: 1px solid #dbe5f3;
   background: #f5f8fd;
+}
+
+.bookings-table thead th:nth-child(5),
+.bookings-table thead th:nth-child(6),
+.bookings-table thead th:nth-child(7),
+.bookings-table tbody td:nth-child(5),
+.bookings-table tbody td:nth-child(6),
+.bookings-table tbody td:nth-child(7) {
+  text-align: center;
 }
 
 .bookings-table tbody td {

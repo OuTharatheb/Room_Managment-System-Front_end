@@ -5,7 +5,6 @@ export default function Home() {
   const [bookingsVersion, setBookingsVersion] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedType, setSelectedType] = useState("");
 
   useEffect(() => {
     const onBookingsUpdated = () => setBookingsVersion((v) => v + 1);
@@ -79,15 +78,13 @@ export default function Home() {
 
     const availableCount = 6 - bookedCount;
     return [
-      { icon: "🛏️", label: "Total Rooms", value: 6, color: "#4a5568" },
+      { label: "Total Rooms", value: 6 },
       {
-        icon: "✅",
         label: "Available",
         value: availableCount,
-        color: "#10b981",
       },
-      { icon: "📋", label: "Booked", value: bookedCount, color: "#3b82f6" },
-      { icon: "👥", label: "Guests", value: totalGuests, color: "#FDB022" },
+      { label: "Booked", value: bookedCount },
+      { label: "Guests", value: totalGuests },
     ];
   }
 
@@ -97,20 +94,6 @@ export default function Home() {
     return `status status-${status}`;
   };
 
-  const getRoomIcon = (roomName) => {
-    if (roomName.includes("Single")) return "🛏️";
-    if (roomName.includes("Double")) return "🛏️🛏️";
-    if (roomName.includes("Suite")) return "👑";
-    return "🛏️";
-  };
-
-  const getRoomType = (roomName) => {
-    if (roomName.includes("Single")) return "single";
-    if (roomName.includes("Double")) return "double";
-    if (roomName.includes("Suite")) return "suite";
-    return "other";
-  };
-
   const filteredRooms = rooms.filter((room) => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
     const matchesSearch =
@@ -118,10 +101,8 @@ export default function Home() {
       room.name.toLowerCase().includes(normalizedSearch);
     const matchesStatus =
       selectedStatus === "" || room.status === selectedStatus;
-    const matchesType =
-      selectedType === "" || getRoomType(room.name) === selectedType;
 
-    return matchesSearch && matchesStatus && matchesType;
+    return matchesSearch && matchesStatus;
   });
 
   return (
@@ -130,12 +111,11 @@ export default function Home() {
       <header className="home-header">
         <div className="header-content">
           <div className="header-title">
-            <h1>🏨 Hotel Room Booking System</h1>
+            <h1>Hotel Room Booking System</h1>
             <p>
               Receptionist booking system for guests - Manage rooms efficiently
             </p>
           </div>
-          <button className="btn btn-primary">+ Book Room</button>
         </div>
       </header>
 
@@ -143,16 +123,10 @@ export default function Home() {
       <main className="home-main">
         {/* Statistics Cards */}
         <section className="stats-section">
-          <h2>📊 Overview</h2>
+          <h2>Overview</h2>
           <div className="stats-grid">
             {stats.map((stat) => (
               <div key={stat.label} className="stat-card">
-                <div
-                  className="stat-icon"
-                  style={{ backgroundColor: stat.color }}
-                >
-                  {stat.icon}
-                </div>
                 <div className="stat-content">
                   <p className="stat-label">{stat.label}</p>
                   <p className="stat-value">{stat.value}</p>
@@ -194,9 +168,6 @@ export default function Home() {
                 <div key={room.id} className="room-card">
                   <div className="room-header">
                     <div>
-                      <span style={{ fontSize: "24px", marginRight: "8px" }}>
-                        {getRoomIcon(room.name)}
-                      </span>
                       <h3 style={{ display: "inline" }}>{room.name}</h3>
                     </div>
                     <span className={getStatusClass(room.status)}>
@@ -216,22 +187,11 @@ export default function Home() {
                       <span className="detail-value">{room.floor}</span>
                     </div>
                   </div>
-                  <div className="room-actions">
-                    <button className="btn btn-small btn-secondary">
-                      View
-                    </button>
-                    <button className="btn btn-small btn-secondary">
-                      Book
-                    </button>
-                    <button className="btn btn-small btn-secondary">
-                      Edit
-                    </button>
-                  </div>
                 </div>
               ))}
               {filteredRooms.length === 0 && (
                 <p className="no-rooms-message">
-                  No rooms match your search, room type, and status filters.
+                  No rooms match your search and status filters.
                 </p>
               )}
             </div>

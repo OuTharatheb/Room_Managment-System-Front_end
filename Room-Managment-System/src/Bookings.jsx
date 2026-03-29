@@ -169,7 +169,7 @@ export default function Bookings() {
 
     // Check room availability
     if (!isRoomAvailable(formData.roomNo, formData.checkInDate, formData.checkOutDate, selectedBooking?.id)) {
-      alert(`❌ Sorry, ${formData.roomNo} is already booked for those dates. Please select different dates or another room.`)
+      alert(`Sorry, ${formData.roomNo} is already booked for those dates. Please select different dates or another room.`)
       return
     }
 
@@ -279,7 +279,7 @@ export default function Bookings() {
                         isRoomAvailable(room.name, formData.checkInDate, formData.checkOutDate, selectedBooking?.id)
                       return (
                         <option key={room.id} value={room.name} disabled={!isAvailable && formData.checkInDate && formData.checkOutDate}>
-                          {room.name} (${room.rate}/night) {!isAvailable && formData.checkInDate && formData.checkOutDate ? '❌ Booked' : '✅ Available'}
+                          {room.name} (${room.rate}/night) {!isAvailable && formData.checkInDate && formData.checkOutDate ? 'Booked' : 'Available'}
                         </option>
                       )
                     })}
@@ -380,7 +380,7 @@ export default function Bookings() {
         {/* Active Bookings Section */}
         <div className="bookings-section">
           <div className="section-header">
-            <h2>📋 Active Bookings ({activeBookings.length})</h2>
+            <h2>Active Bookings ({activeBookings.length})</h2>
             <div className="filters">
               <input
                 type="text"
@@ -428,7 +428,7 @@ export default function Bookings() {
                         <td>
                           <div className="date-info">
                             <div>{new Date(booking.checkInDate).toLocaleDateString()}</div>
-                            {booking.checkInTime && <div className="time-info">✓ {booking.checkInTime}</div>}
+                            {booking.checkInTime && <div className="time-info">{booking.checkInTime}</div>}
                           </div>
                         </td>
                         <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td>
@@ -437,7 +437,7 @@ export default function Bookings() {
                         </td>
                         <td>
                           <span className={`status status-${booking.status}`}>
-                            {booking.status === 'checked-in' ? '✓ Checked In' : '⏳ Confirmed'}
+                            {booking.status === 'checked-in' ? 'Checked In' : 'Confirmed'}
                           </span>
                         </td>
                         <td>
@@ -465,14 +465,14 @@ export default function Bookings() {
                               onClick={() => openForm(booking)}
                               title="Edit booking"
                             >
-                              ✎
+                              Edit
                             </button>
                             <button
                               className="btn-icon btn-delete"
                               onClick={() => deleteBooking(booking.id)}
                               title="Delete booking"
                             >
-                              ✕
+                              Delete
                             </button>
                           </div>
                         </td>
@@ -488,12 +488,12 @@ export default function Bookings() {
         {/* Booking History Section */}
         <div className="bookings-section">
           <div className="section-header">
-            <h2>📜 Booking History</h2>
+            <h2>Booking History</h2>
             <button
               className="btn btn-secondary"
               onClick={() => setShowHistory(!showHistory)}
             >
-              {showHistory ? '▼ Hide' : '▶ Show'} ({bookingHistory.length})
+              {showHistory ? 'Hide' : 'Show'} ({bookingHistory.length})
             </button>
           </div>
 

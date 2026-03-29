@@ -1,19 +1,54 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './History.css'
 
 export default function History() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterRoom, setFilterRoom] = useState('all')
-  const bookingHistory = [
-    { id: 1, guestName: 'John Doe', guestEmail: 'john@example.com', guestPhone: '+1-555-0101', roomNo: 'Room 101', checkInDate: '2026-02-10', checkOutDate: '2026-02-12', checkInTime: '14:30', checkOutTime: '11:15', duration: '2 nights', totalCost: '$200' },
-    { id: 2, guestName: 'Jane Smith', guestEmail: 'jane@example.com', guestPhone: '+1-555-0102', roomNo: 'Room 205', checkInDate: '2026-02-15', checkOutDate: '2026-02-18', checkInTime: '15:00', checkOutTime: '11:00', duration: '3 nights', totalCost: '$450' },
-    { id: 3, guestName: 'Mike Johnson', guestEmail: 'mike@example.com', guestPhone: '+1-555-0103', roomNo: 'Room 101', checkInDate: '2026-03-01', checkOutDate: '2026-03-04', checkInTime: '16:45', checkOutTime: '10:30', duration: '3 nights', totalCost: '$300' },
-    { id: 4, guestName: 'Sarah Williams', guestEmail: 'sarah@example.com', guestPhone: '+1-555-0104', roomNo: 'Room 301', checkInDate: '2026-03-05', checkOutDate: '2026-03-10', checkInTime: '14:00', checkOutTime: '12:00', duration: '5 nights', totalCost: '$1250' },
-    { id: 5, guestName: 'Alex Brown', guestEmail: 'alex@example.com', guestPhone: '+1-555-0105', roomNo: 'Room 102', checkInDate: '2026-03-15', checkOutDate: '2026-03-17', checkInTime: '15:30', checkOutTime: '11:45', duration: '2 nights', totalCost: '$200' },
-    { id: 6, guestName: 'John Doe', guestEmail: 'john@example.com', guestPhone: '+1-555-0101', roomNo: 'Room 205', checkInDate: '2026-03-20', checkOutDate: '2026-03-23', checkInTime: '14:15', checkOutTime: '10:00', duration: '3 nights', totalCost: '$450' },
-  ]
+  const [bookingHistory, setBookingHistory] = useState([])
 
-  const rooms = ['all', 'Room 101', 'Room 102', 'Room 205', 'Room 301']
+  const loadBookingHistory = () => {
+    const saved = localStorage.getItem('bookingHistory')
+    const parsed = saved ? JSON.parse(saved) : []
+
+    return parsed.map((booking) => {
+      const checkInDate = booking.checkInDate || ''
+      const checkOutDate = booking.checkOutDate || ''
+      const checkIn = new Date(checkInDate)
+      const checkOut = new Date(checkOutDate)
+      const hasValidDates = !Number.isNaN(checkIn.getTime()) && !Number.isNaN(checkOut.getTime())
+      const nights = hasValidDates
+        ? Math.max(1, Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24)))
+        : 0
+
+      return {
+        ...booking,
+        guestEmail: booking.email || booking.guestEmail || '-',
+        guestPhone: booking.phone || booking.guestPhone || '-',
+        checkInTime: booking.checkInTime || '--',
+        checkOutTime: booking.checkOutTime || '--',
+        duration: `${nights} ${nights === 1 ? 'night' : 'nights'}`,
+        totalCost: booking.totalCost || '$0',
+      }
+    })
+  }
+
+  useEffect(() => {
+    const refreshHistory = () => setBookingHistory(loadBookingHistory())
+
+    refreshHistory()
+    window.addEventListener('bookings-updated', refreshHistory)
+    window.addEventListener('storage', refreshHistory)
+
+    return () => {
+      window.removeEventListener('bookings-updated', refreshHistory)
+      window.removeEventListener('storage', refreshHistory)
+    }
+  }, [])
+
+  const rooms = useMemo(() => {
+    const roomSet = new Set(bookingHistory.map((booking) => booking.roomNo).filter(Boolean))
+    return ['all', ...Array.from(roomSet).sort()]
+  }, [bookingHistory])
 
   const filteredHistory = bookingHistory.filter(booking => {
     const matchesSearch = booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,7 +59,7 @@ export default function History() {
 
   const calculateRevenue = () => {
     return filteredHistory.reduce((sum, booking) => {
-      const cost = parseInt(booking.totalCost.replace('$', ''))
+      const cost = Number(String(booking.totalCost).replace(/[^0-9.-]/g, '')) || 0
       return sum + cost
     }, 0)
   }
@@ -34,7 +69,7 @@ export default function History() {
       {/* Header */}
       <div className="history-header">
         <div className="header-content">
-          <h1>📜 Booking History</h1>
+          <h1>Booking History</h1>
           <p>View all past bookings and guest check-out records</p>
         </div>
       </div>
@@ -42,15 +77,15 @@ export default function History() {
       {/* Stats */}
       <div className="history-stats">
         <div className="stat-card">
-          <div className="stat-label">📊 Total Check-outs</div>
+          <div className="stat-label">Total Check-outs</div>
           <div className="stat-value">{filteredHistory.length}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">💰 Total Revenue</div>
+          <div className="stat-label">Total Revenue</div>
           <div className="stat-value">${calculateRevenue()}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">📅 Average Stay</div>
+          <div className="stat-label">Average Stay</div>
           <div className="stat-value">
             {filteredHistory.length > 0
               ? (filteredHistory.reduce((sum, b) => sum + parseInt(b.duration), 0) / filteredHistory.length).toFixed(1)
@@ -64,7 +99,7 @@ export default function History() {
         {/* History Section */}
         <div className="history-section">
           <div className="section-header">
-            <h2>🏨 Check-out Records ({filteredHistory.length})</h2>
+            <h2>Check-out Records ({filteredHistory.length})</h2>
             <div className="filters">
               <input
                 type="text"
@@ -121,18 +156,18 @@ export default function History() {
                         </td>
                         <td className="dates-cell">
                           <div className="date-info">
-                            📅 Check-in: {new Date(booking.checkInDate).toLocaleDateString()}
+                            Check-in: {new Date(booking.checkInDate).toLocaleDateString()}
                           </div>
                           <div className="date-info">
-                            ✔️ Check-out: {new Date(booking.checkOutDate).toLocaleDateString()}
+                            Check-out: {new Date(booking.checkOutDate).toLocaleDateString()}
                           </div>
                         </td>
                         <td className="duration-cell">
                           <span className="duration-badge">{booking.duration}</span>
                         </td>
                         <td className="times-cell">
-                          <div className="time-info">🕐 In: {booking.checkInTime}</div>
-                          <div className="time-info">🕐 Out: {booking.checkOutTime}</div>
+                          <div className="time-info">In: {booking.checkInTime}</div>
+                          <div className="time-info">Out: {booking.checkOutTime}</div>
                         </td>
                         <td className="revenue-cell">
                           <span className="revenue-badge">{booking.totalCost}</span>

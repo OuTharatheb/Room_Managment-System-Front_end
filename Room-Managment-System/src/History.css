@@ -326,10 +326,29 @@
   box-shadow: 0 18px 40px rgba(20, 27, 45, 0.28);
 }
 
+.history-stats {
+  margin-top: 24px;
+}
+
 .history-main {
   width: 100%;
-  margin: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 18px 40px;
+}
+
+.history-table th:nth-child(2),
+.history-table th:nth-child(4),
+.history-table th:nth-child(5),
+.history-table th:nth-child(6) {
+  text-align: center;
+}
+
+.room-cell,
+.duration-cell,
+.times-cell,
+.revenue-cell {
+  text-align: center;
 }
 
 .history-container {

@@ -39,7 +39,7 @@ export default function Settings() {
       {/* Header */}
       <div className="settings-header">
         <div className="header-content">
-          <h1>⚙️ Hotel Configuration</h1>
+          <h1>Hotel Configuration</h1>
           <p>Configure hotel settings and preferences</p>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function Settings() {
         {/* Success Message */}
         {saveSuccess && (
           <div className="success-message">
-            ✓ Settings saved successfully!
+            Settings saved successfully.
           </div>
         )}
 
@@ -316,7 +316,7 @@ export default function Settings() {
         {/* Save Button */}
         <div className="settings-footer">
           <button className="btn btn-primary btn-large" onClick={handleSave}>
-            💾 Save Settings
+            Save Settings
           </button>
         </div>
       </div>

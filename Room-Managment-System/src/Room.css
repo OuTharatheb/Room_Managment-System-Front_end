@@ -326,8 +326,9 @@
 /* Rooms Detail List */
 .rooms-detail-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
   gap: 20px;
+  justify-content: center;
 }
 
 /* Room Detail Card */
@@ -367,15 +368,17 @@
   padding: 24px;
   border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
-  align-items: start;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   gap: 12px;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .room-title {
-  flex: 1;
+  width: 100%;
 }
 
 .room-title h3 {
@@ -439,6 +442,8 @@
 .detail-col {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .detail-label {
@@ -459,6 +464,7 @@
 .amenities-section {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .amenities-list {
@@ -466,6 +472,7 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 8px;
+  justify-content: center;
 }
 
 .amenity-tag {
@@ -482,7 +489,7 @@
 .room-detail-footer {
   padding: 20px 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
@@ -494,8 +501,9 @@
 .status-controls {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  flex: 1;
+  flex-wrap: wrap;
 }
 
 .status-controls label {
@@ -529,6 +537,7 @@
 .room-actions {
   display: flex;
   gap: 8px;
+  justify-content: center;
 }
 
 /* Responsive */
@@ -620,9 +629,9 @@
 
 /* Harmonized full-width overrides */
 .room-main {
-  max-width: none;
+  max-width: 1200px;
   width: 100%;
-  margin: 0;
+  margin: 0 auto;
   padding: 28px 18px 40px;
 }
 

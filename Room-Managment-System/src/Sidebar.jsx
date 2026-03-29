@@ -2,20 +2,19 @@ import './Sidebar.css'
 
 export default function Sidebar({ currentPage, setCurrentPage }) {
   const menuItems = [
-    { id: 'bookings', label: 'Book Guest Room', icon: '📅' },
-    { id: 'calendar', label: 'Room Calendar', icon: '🗓️' },
-    { id: 'rooms', label: 'View Rooms', icon: '🏢' },
-    { id: 'home', label: 'Dashboard', icon: '📊' },
-    { id: 'guests', label: 'Guests', icon: '👥' },
-    { id: 'history', label: 'History', icon: '📜' },
-    { id: 'settings', label: 'Settings', icon: '⚙️' },
+    { id: 'bookings', label: 'Book Guest Room' },
+    { id: 'calendar', label: 'Room Calendar' },
+    { id: 'rooms', label: 'View Rooms' },
+    { id: 'home', label: 'Dashboard' },
+    { id: 'guests', label: 'Guests' },
+    { id: 'history', label: 'History' },
+    { id: 'settings', label: 'Settings' },
   ]
 
   return (
     <aside className="sidebar">
       {/* Logo Section */}
       <div className="sidebar-logo">
-        <div className="logo-icon">🏨</div>
         <h2>Receptionist Portal</h2>
       </div>
 
@@ -27,7 +26,6 @@ export default function Sidebar({ currentPage, setCurrentPage }) {
             className={`nav-item ${currentPage === item.id ? 'active' : ''}`}
             onClick={() => setCurrentPage(item.id)}
           >
-            <span className="nav-icon">{item.icon}</span>
             <span className="nav-label">{item.label}</span>
           </button>
         ))}

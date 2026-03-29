@@ -123,7 +123,7 @@ export default function Room() {
       {/* Header */}
       <div className="room-header">
         <div className="header-content">
-          <h1>🛏️ Guest Room Management</h1>
+          <h1>Guest Room Management</h1>
           <p>Manage guest rooms and availability</p>
         </div>
         <button className="btn btn-primary" onClick={() => openForm()}>
@@ -217,7 +217,7 @@ export default function Room() {
 
         {/* Rooms Detail View */}
           <div className="rooms-detail-section">
-            <h2>📋 All Rooms ({displayRooms.length})</h2>
+            <h2>All Rooms ({displayRooms.length})</h2>
           
           <div className="rooms-detail-list">
              {displayRooms.length === 0 ? (

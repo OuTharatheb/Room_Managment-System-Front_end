@@ -1,17 +1,83 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './Guest.css'
 
 export default function Guest() {
+  const [bookingsVersion, setBookingsVersion] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
 
-  const guests = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', phone: '+1-555-0101', totalVisits: 5, lastVisit: '2026-03-21', status: 'regular', joinDate: '2025-06-15' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '+1-555-0102', totalVisits: 3, lastVisit: '2026-03-25', status: 'regular', joinDate: '2025-11-20' },
-    { id: 3, name: 'Mike Johnson', email: 'mike@example.com', phone: '+1-555-0103', totalVisits: 1, lastVisit: '2026-03-26', status: 'new', joinDate: '2026-03-20' },
-    { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', totalVisits: 8, lastVisit: '2026-03-20', status: 'vip', joinDate: '2024-12-10' },
-    { id: 5, name: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', totalVisits: 2, lastVisit: '2026-03-19', status: 'regular', joinDate: '2026-01-05' },
-  ]
+  useEffect(() => {
+    const onBookingsUpdated = () => setBookingsVersion(v => v + 1)
+    window.addEventListener('bookings-updated', onBookingsUpdated)
+    window.addEventListener('storage', onBookingsUpdated)
+
+    return () => {
+      window.removeEventListener('bookings-updated', onBookingsUpdated)
+      window.removeEventListener('storage', onBookingsUpdated)
+    }
+  }, [])
+
+  const guests = useMemo(() => {
+    void bookingsVersion
+
+    const activeBookings = JSON.parse(localStorage.getItem('activeBookings') || '[]')
+    const bookingHistory = JSON.parse(localStorage.getItem('bookingHistory') || '[]')
+    const allBookings = [...activeBookings, ...bookingHistory]
+
+    const guestMap = new Map()
+
+    for (const booking of allBookings) {
+      const name = booking.guestName || ''
+      if (!name.trim()) continue
+
+      const email = booking.email || booking.guestEmail || '-'
+      const phone = booking.phone || booking.guestPhone || '-'
+      const normalizedKey = `${name.trim().toLowerCase()}|${String(email).trim().toLowerCase()}|${String(phone).trim().toLowerCase()}`
+
+      const checkInDate = booking.checkInDate || null
+      const checkOutDate = booking.checkOutDate || null
+      const visitDate = checkOutDate || checkInDate
+
+      if (!guestMap.has(normalizedKey)) {
+        guestMap.set(normalizedKey, {
+          id: normalizedKey,
+          name,
+          email,
+          phone,
+          totalVisits: 0,
+          lastVisit: visitDate,
+          joinDate: checkInDate,
+        })
+      }
+
+      const guest = guestMap.get(normalizedKey)
+      guest.totalVisits += 1
+
+      if (visitDate && (!guest.lastVisit || new Date(visitDate) > new Date(guest.lastVisit))) {
+        guest.lastVisit = visitDate
+      }
+
+      if (checkInDate && (!guest.joinDate || new Date(checkInDate) < new Date(guest.joinDate))) {
+        guest.joinDate = checkInDate
+      }
+    }
+
+    return Array.from(guestMap.values())
+      .map((guest) => {
+        const status = guest.totalVisits >= 6 ? 'vip' : guest.totalVisits >= 2 ? 'regular' : 'new'
+        return {
+          ...guest,
+          status,
+          lastVisit: guest.lastVisit || guest.joinDate || null,
+          joinDate: guest.joinDate || guest.lastVisit || null,
+        }
+      })
+      .sort((a, b) => {
+        const aDate = a.lastVisit ? new Date(a.lastVisit).getTime() : 0
+        const bDate = b.lastVisit ? new Date(b.lastVisit).getTime() : 0
+        return bDate - aDate
+      })
+  }, [bookingsVersion])
 
   const filteredGuests = guests.filter(guest => {
     const matchesSearch = guest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -23,9 +89,9 @@ export default function Guest() {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'new': { label: '🆕 New Guest', color: '#06b6d4' },
-      'regular': { label: '⭐ Regular', color: '#FDB022' },
-      'vip': { label: '👑 VIP', color: '#d97706' },
+      'new': { label: 'New Guest', color: '#06b6d4' },
+      'regular': { label: 'Regular', color: '#FDB022' },
+      'vip': { label: 'VIP', color: '#d97706' },
     }
     return statusConfig[status] || { label: status, color: '#666' }
   }
@@ -35,7 +101,7 @@ export default function Guest() {
       {/* Header */}
       <div className="guests-header">
         <div className="header-content">
-          <h1>👥 Guest Profiles</h1>
+          <h1>Guest Profiles</h1>
           <p>View guest history and check if they've visited before</p>
         </div>
       </div>
@@ -45,7 +111,7 @@ export default function Guest() {
         {/* Guests Section */}
         <div className="guests-section">
           <div className="section-header">
-            <h2>🏨 All Guests ({filteredGuests.length})</h2>
+            <h2>All Guests ({filteredGuests.length})</h2>
             <div className="filters">
               <input
                 type="text"
@@ -100,10 +166,10 @@ export default function Guest() {
                           </td>
                           <td className="visits-cell">
                             <span className="visits-badge">{guest.totalVisits}</span>
-                            {guest.totalVisits > 5 && '⭐'}
+                            {guest.totalVisits > 5 && ' Frequent'}
                           </td>
                           <td className="last-visit-cell">
-                            {new Date(guest.lastVisit).toLocaleDateString()}
+                            {guest.lastVisit ? new Date(guest.lastVisit).toLocaleDateString() : '-'}
                           </td>
                           <td className="status-cell">
                             <span 
@@ -114,7 +180,7 @@ export default function Guest() {
                             </span>
                           </td>
                           <td className="join-date-cell">
-                            {new Date(guest.joinDate).toLocaleDateString()}
+                            {guest.joinDate ? new Date(guest.joinDate).toLocaleDateString() : '-'}
                           </td>
                         </tr>
                       )
