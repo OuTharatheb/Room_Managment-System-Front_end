@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import singleRoomImage from "../assets/Single.jpg";
+import doubleRoomImage from "../assets/Double Room.jpg";
+import suiteRoomImage from "../assets/Suit.jpg";
 import "./Home.css";
 
 export default function Home() {
@@ -23,6 +26,7 @@ export default function Home() {
       capacity: 1,
       status: "available",
       floor: "1st",
+      image: singleRoomImage,
     },
     {
       id: 2,
@@ -30,6 +34,7 @@ export default function Home() {
       capacity: 1,
       status: "available",
       floor: "1st",
+      image: singleRoomImage,
     },
     {
       id: 3,
@@ -37,6 +42,7 @@ export default function Home() {
       capacity: 2,
       status: "available",
       floor: "2nd",
+      image: doubleRoomImage,
     },
     {
       id: 4,
@@ -44,6 +50,7 @@ export default function Home() {
       capacity: 2,
       status: "available",
       floor: "2nd",
+      image: doubleRoomImage,
     },
     {
       id: 5,
@@ -51,6 +58,7 @@ export default function Home() {
       capacity: 3,
       status: "available",
       floor: "3rd",
+      image: suiteRoomImage,
     },
     {
       id: 6,
@@ -58,6 +66,7 @@ export default function Home() {
       capacity: 3,
       status: "available",
       floor: "3rd",
+      image: suiteRoomImage,
     },
   ];
 
@@ -166,10 +175,16 @@ export default function Home() {
             <div className="rooms-list">
               {filteredRooms.map((room) => (
                 <div key={room.id} className="room-card">
-                  <div className="room-header">
-                    <div>
-                      <h3 style={{ display: "inline" }}>{room.name}</h3>
-                    </div>
+                  <div className="room-media-wrap">
+                    <img
+                      className="room-image"
+                      src={room.image}
+                      alt={`${room.name} view`}
+                      loading="lazy"
+                    />
+                    <h3>{room.name}</h3>
+                  </div>
+                  <div className="room-status-line">
                     <span className={getStatusClass(room.status)}>
                       {room.status.charAt(0).toUpperCase() +
                         room.status.slice(1)}
