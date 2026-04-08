@@ -5,22 +5,26 @@
 
 /* Header */
 .settings-header {
-  background: linear-gradient(135deg, #8B7355 0%, #FDB022 50%, #8B7355 100%);
-  color: white;
-  padding: 48px 20px;
-  box-shadow: var(--shadow-2xl);
+  background: linear-gradient(132deg, #1a1f35 0%, #273f6a 46%, #fdb022 130%);
+  color: #fff;
+  padding: 42px 22px;
+  box-shadow: 0 18px 40px rgba(20, 27, 45, 0.28);
   position: relative;
   overflow: hidden;
 }
 
 .settings-header::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0;
-  right: -50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 55%,
+    transparent 75%
+  );
+  transform: translateX(-60%);
+  animation: settings-sheen 8s linear infinite;
   pointer-events: none;
 }
 
@@ -38,9 +42,18 @@
 
 .settings-header .header-content p {
   margin: 8px 0 0 0;
-  opacity: 0.9;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
+  opacity: 0.92;
+}
+
+@keyframes settings-sheen {
+  from {
+    transform: translateX(-65%);
+  }
+  to {
+    transform: translateX(120%);
+  }
 }
 
 /* Main Content */
@@ -52,7 +65,11 @@
 
 /* Success Message */
 .success-message {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.15) 0%,
+    rgba(16, 185, 129, 0.05) 100%
+  );
   color: #047857;
   padding: 16px 20px;
   border-radius: 10px;
@@ -99,7 +116,7 @@
 }
 
 .tab:hover {
-  color: var(--text-h);
+  color: var(--accent);
 }
 
 .tab.active {
@@ -206,20 +223,9 @@
 }
 
 /* Buttons */
-.btn {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: var(--sans);
-  letter-spacing: 0.3px;
-}
 
 .btn-primary {
-  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
+  background: linear-gradient(135deg, #fdb022 0%, #d4a01f 100%);
   color: white;
 }
 
@@ -239,14 +245,18 @@
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
   transform: translateY(-2px);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .settings-header {
-    padding: 32px 20px;
+    padding: 30px 18px;
   }
 
   .settings-main {
@@ -352,5 +362,9 @@
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, rgba(253, 176, 34, 0.18) 0%, rgba(253, 176, 34, 0.07) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(253, 176, 34, 0.18) 0%,
+    rgba(253, 176, 34, 0.07) 100%
+  );
 }

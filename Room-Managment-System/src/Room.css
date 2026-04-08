@@ -1,37 +1,70 @@
 .room-management {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(26, 31, 53, 0.12), transparent 38%),
+    radial-gradient(
+      circle at 94% 0%,
+      rgba(253, 176, 34, 0.16),
+      transparent 34%
+    ),
+    linear-gradient(145deg, #f4f7fd 0%, #ffffff 50%, #eef2fb 100%);
 }
 
 /* Header */
 .room-header {
-  background: linear-gradient(135deg, #8B7355 0%, #FDB022 50%, #8B7355 100%);
-  color: white;
-  padding: 48px 20px;
-  box-shadow: var(--shadow-2xl);
+  background: linear-gradient(132deg, #1a1f35 0%, #273f6a 46%, #fdb022 130%);
+  color: #fff;
+  padding: 42px 22px;
+  box-shadow: 0 18px 40px rgba(20, 27, 45, 0.28);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   flex-wrap: wrap;
   position: relative;
   overflow: hidden;
 }
 
 .room-header::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0;
-  right: -50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 55%,
+    transparent 75%
+  );
+  transform: translateX(-60%);
+  animation: room-sheen 8s linear infinite;
   pointer-events: none;
+}
+
+@keyframes room-sheen {
+  from {
+    transform: translateX(-65%);
+  }
+  to {
+    transform: translateX(120%);
+  }
 }
 
 .room-header .header-content {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.room-header .header-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
 }
 
 .room-header .header-content h1 {
@@ -42,10 +75,47 @@
 }
 
 .room-header .header-content p {
-  margin: 8px 0 0 0;
-  opacity: 0.9;
-  font-size: 16px;
+  margin: 0;
+  font-size: 15px;
   font-weight: 500;
+  opacity: 0.92;
+  max-width: 520px;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.room-header .btn-primary {
+  padding: 14px 22px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fdb022 0%, #d79312 100%);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(215, 147, 18, 0.3);
+  width: fit-content;
+  min-width: 160px;
+}
+
+.room-header .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(215, 147, 18, 0.36);
+}
+
+@media (max-width: 768px) {
+  .room-header {
+    padding: 30px 18px;
+  }
+
+  .room-header .header-content {
+    align-items: flex-start;
+  }
+
+  .room-header .header-content p {
+    text-align: left;
+  }
+
+  .room-header .btn-primary {
+    width: 100%;
+    min-width: 0;
+  }
 }
 
 /* Main Content */
@@ -186,10 +256,23 @@
   background: white;
 }
 
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  width: 95%;
+  cursor: pointer;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus {
+  color: #000;
+}
+
 .form-row {
   display: grid;
+  align-items: center;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 14px;
+  padding: 0;
 }
 
 .amenities-grid {
@@ -204,18 +287,28 @@
   gap: 10px;
   padding: 10px;
   border-radius: 8px;
+  border: 1.5px solid var(--border);
+  color: var(--text-h);
   background: var(--code-bg);
   transition: all 0.2s ease;
 }
 
 .checkbox-item:hover {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(79, 70, 229, 0.05) 100%);
+  border-color: #fdb022;
+  box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.14);
+  cursor: pointer;
+  background-color: white;
+  color: var(--text);
+}
+
+.checkbox-item:hover label {
+  color: var(--text);
 }
 
 .checkbox-item input[type="checkbox"] {
   width: auto;
   cursor: pointer;
-  accent-color: #4f46e5;
+  accent-color: var(--code-bg);
 }
 
 .checkbox-item label {
@@ -252,7 +345,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FDB022 0%, #D4A01F 100%);
+  background: linear-gradient(135deg, #fdb022 0%, #d4a01f 100%);
   color: white;
 }
 
@@ -272,12 +365,20 @@
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
   transform: translateY(-2px);
 }
 
 .btn-danger {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.15) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
   color: #dc2626;
   border: 1.5px solid rgba(239, 68, 68, 0.3);
 }
@@ -342,14 +443,20 @@
 }
 
 .room-detail-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -100%;
   left: -100%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(45, 55, 72, 0.08) 0%, transparent 70%);
-  transition: top 0.4s ease, left 0.4s ease;
+  background: radial-gradient(
+    circle,
+    rgba(45, 55, 72, 0.08) 0%,
+    transparent 70%
+  );
+  transition:
+    top 0.4s ease,
+    left 0.4s ease;
   pointer-events: none;
 }
 
@@ -410,17 +517,29 @@
 }
 
 .status-available {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.15) 0%,
+    rgba(16, 185, 129, 0.05) 100%
+  );
   color: #047857;
 }
 
 .status-booked {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.15) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
   color: #b45309;
 }
 
 .status-maintenance {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.15) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
   color: #b91c1c;
 }
 
@@ -476,7 +595,11 @@
 }
 
 .amenity-tag {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
   color: #7c3aed;
   padding: 6px 12px;
   border-radius: 18px;
@@ -625,56 +748,4 @@
   .modal-header {
     padding: 20px;
   }
-}
-
-/* Harmonized full-width overrides */
-.room-main {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 28px 18px 40px;
-}
-
-.rooms-detail-section {
-  padding: 24px;
-  border: 1px solid #dce5f3;
-  box-shadow: 0 10px 30px rgba(24, 35, 59, 0.08);
-}
-
-.modal-content {
-  max-width: 700px;
-  border: 1px solid rgba(22, 31, 56, 0.14);
-  border-radius: 20px;
-  box-shadow: 0 28px 64px rgba(19, 28, 49, 0.35);
-}
-
-.room-form,
-.modal-header {
-  padding-left: 28px;
-  padding-right: 28px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.status-select:focus {
-  border-color: #fdb022;
-  box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.14);
-}
-
-.checkbox-item:hover {
-  background: linear-gradient(135deg, rgba(253, 176, 34, 0.15) 0%, rgba(253, 176, 34, 0.06) 100%);
-}
-
-.checkbox-item input[type="checkbox"] {
-  accent-color: #fdb022;
-}
-
-.btn-secondary:hover {
-  background: linear-gradient(135deg, rgba(253, 176, 34, 0.18) 0%, rgba(253, 176, 34, 0.07) 100%);
-}
-
-.amenity-tag {
-  background: linear-gradient(135deg, rgba(253, 176, 34, 0.2) 0%, rgba(253, 176, 34, 0.08) 100%);
-  color: #8b5e08;
-  border-color: rgba(253, 176, 34, 0.34);
 }
