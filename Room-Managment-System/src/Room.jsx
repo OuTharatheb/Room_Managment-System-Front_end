@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./Room.css";
 
 export default function Room() {
+  const STORAGE_KEY = "roomsData";
   const initialRooms = [
     {
       id: 1,
@@ -53,8 +54,21 @@ export default function Room() {
     },
   ];
 
-  const [internalRooms, setInternalRooms] = useState(initialRooms);
+  const [internalRooms, setInternalRooms] = useState(() => {
+    try {
+      const savedRooms = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return Array.isArray(savedRooms) && savedRooms.length > 0
+        ? savedRooms
+        : initialRooms;
+    } catch {
+      return initialRooms;
+    }
+  });
   const [bookingsVersion, setBookingsVersion] = useState(0);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(internalRooms));
+  }, [internalRooms]);
 
   useEffect(() => {
     const onBookingsUpdated = () => setBookingsVersion((v) => v + 1);

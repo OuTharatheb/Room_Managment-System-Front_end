@@ -6,7 +6,7 @@
 
 /* Header */
 .history-header {
-  background: linear-gradient(135deg, #8B7355 0%, #FDB022 100%);
+  background: linear-gradient(135deg, #8b7355 0%, #fdb022 100%);
   color: white;
   padding: 40px 20px;
   margin-bottom: 30px;
@@ -39,7 +39,7 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   text-align: center;
-  border-left: 4px solid #FDB022;
+  border-left: 4px solid #fdb022;
 }
 
 .stat-label {
@@ -86,7 +86,6 @@
   font-size: 14px;
   font-family: inherit;
   transition: all 0.3s ease;
-  
 }
 
 .search-input {
@@ -97,7 +96,7 @@
 .search-input:focus,
 .filter-select:focus {
   outline: none;
-  border-color: #FDB022;
+  border-color: #fdb022;
   box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.1);
   color: #333;
 }
@@ -184,7 +183,7 @@
 /* Room Badge */
 .room-badge {
   display: inline-block;
-  background: #D4A01F;
+  background: #d4a01f;
   color: white;
   padding: 5px 12px;
   border-radius: 6px;
@@ -206,7 +205,7 @@
 /* Duration Badge */
 .duration-badge {
   display: inline-block;
-  background: #FDB022;
+  background: #fdb022;
   color: white;
   padding: 5px 12px;
   border-radius: 6px;
@@ -231,7 +230,7 @@
 /* Revenue Badge */
 .revenue-badge {
   display: inline-block;
-  background: linear-gradient(135deg, #8B7355, #FDB022);
+  background: linear-gradient(135deg, #8b7355, #fdb022);
   color: white;
   padding: 6px 12px;
   border-radius: 6px;
@@ -316,7 +315,11 @@
 .booking-history {
   background:
     radial-gradient(circle at 20% -10%, rgba(26, 31, 53, 0.1), transparent 44%),
-    radial-gradient(circle at 95% 0%, rgba(253, 176, 34, 0.14), transparent 38%),
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(253, 176, 34, 0.14),
+      transparent 38%
+    ),
     linear-gradient(145deg, #f4f7fd 0%, #ffffff 50%, #eef2fb 100%);
 }
 
@@ -367,5 +370,104 @@
 }
 
 .history-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(253, 176, 34, 0.08) 0%, rgba(253, 176, 34, 0.02) 58%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(253, 176, 34, 0.08) 0%,
+    rgba(253, 176, 34, 0.02) 58%,
+    transparent 100%
+  );
+}
+
+/* Match Room page header style and font */
+.history-header {
+  color: #fff;
+  padding: 42px 22px;
+  box-shadow: 0 18px 40px rgba(20, 27, 45, 0.28);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 55%,
+    transparent 75%
+  );
+  transform: translateX(-60%);
+  animation: history-sheen 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes history-sheen {
+  from {
+    transform: translateX(-65%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+.history-header .header-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.history-header .header-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.history-header .header-content h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  font-family: var(--heading);
+  color: #fff;
+}
+
+.history-header .header-content p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.92;
+  max-width: 520px;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--sans);
+}
+
+.section-header h2 {
+  font-family: var(--heading);
+}
+
+@media (max-width: 768px) {
+  .history-header {
+    padding: 30px 18px;
+  }
+
+  .history-header .header-content {
+    align-items: flex-start;
+  }
+
+  .history-header .header-content p {
+    text-align: left;
+  }
 }

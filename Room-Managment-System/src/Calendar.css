@@ -1,8 +1,16 @@
 .calendar-management {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 18% -12%, rgba(26, 31, 53, 0.12), transparent 42%),
-    radial-gradient(circle at 95% 0%, rgba(253, 176, 34, 0.18), transparent 36%),
+    radial-gradient(
+      circle at 18% -12%,
+      rgba(26, 31, 53, 0.12),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(253, 176, 34, 0.18),
+      transparent 36%
+    ),
     linear-gradient(145deg, #f4f7fd 0%, #ffffff 50%, #eef2fb 100%);
 }
 
@@ -21,17 +29,26 @@
 }
 
 .calendar-header::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.12) 55%, transparent 75%);
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 55%,
+    transparent 75%
+  );
   transform: translateX(-60%);
   animation: calendarSheen 9s linear infinite;
 }
 
 @keyframes calendarSheen {
-  from { transform: translateX(-65%); }
-  to { transform: translateX(120%); }
+  from {
+    transform: translateX(-65%);
+  }
+  to {
+    transform: translateX(120%);
+  }
 }
 
 .calendar-header h1 {
@@ -39,13 +56,19 @@
   color: #fff;
   font-size: 36px;
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
+  font-family: var(--heading);
   position: relative;
   z-index: 1;
 }
 
 .calendar-header p {
   margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: var(--sans);
+  color: rgba(255, 255, 255, 0.92);
   opacity: 0.92;
   position: relative;
   z-index: 1;
@@ -155,7 +178,10 @@
   padding: 10px;
   cursor: pointer;
   color: #182544;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .day-cell span {
@@ -216,10 +242,18 @@
   display: inline-block;
 }
 
-.dot-checkin { background: #0ea872; }
-.dot-occupied { background: #f59e0b; }
-.dot-checkout { background: #3b82f6; }
-.dot-available { background: #dce5f3; }
+.dot-checkin {
+  background: #0ea872;
+}
+.dot-occupied {
+  background: #f59e0b;
+}
+.dot-checkout {
+  background: #3b82f6;
+}
+.dot-available {
+  background: #dce5f3;
+}
 
 .availability-panel {
   padding: 22px;
