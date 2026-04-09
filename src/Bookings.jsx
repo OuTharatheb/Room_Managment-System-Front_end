@@ -14,8 +14,8 @@ export default function Bookings() {
   const [bookingHistory, setBookingHistory] = useState(() => {
     const saved = localStorage.getItem('bookingHistory')
     return saved ? JSON.parse(saved) : [
-      { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: '$280' },
-      { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: '$350' },
+      { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: '$180' },
+      { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: '$250' },
     ]
   })
 
@@ -47,8 +47,8 @@ export default function Bookings() {
   const rooms = [
     { id: 1, name: 'Single Room 101', rate: 100 },
     { id: 2, name: 'Single Room 102', rate: 100 },
-    { id: 3, name: 'Double Room 201', rate: 150 },
-    { id: 4, name: 'Double Room 202', rate: 150 },
+    { id: 3, name: 'Double Room 201', rate: 180 },
+    { id: 4, name: 'Double Room 202', rate: 180 },
     { id: 5, name: 'Suite 301', rate: 250 },
     { id: 6, name: 'Suite 302', rate: 250 },
   ]
