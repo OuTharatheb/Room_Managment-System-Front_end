@@ -4,6 +4,18 @@ import doubleRoomImage from "../assets/Double Room.jpg";
 import suiteRoomImage from "../assets/Suit.jpg";
 import "./Home.css";
 
+const roomRates = {
+  "Single Room 101": 100,
+  "Single Room 102": 100,
+  "Double Room 201": 180,
+  "Double Room 202": 180,
+  "Suite 301": 250,
+  "Suite 302": 250,
+};
+
+const formatCurrency = (amount) => `$${amount}`;
+const getRoomRate = (roomName) => roomRates[roomName] ?? 0;
+
 export default function Home() {
   const [bookingsVersion, setBookingsVersion] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +36,6 @@ export default function Home() {
       id: 1,
       name: "Single Room 101",
       capacity: 1,
-      price: 100,
       status: "available",
       floor: "1st",
       image: singleRoomImage,
@@ -33,7 +44,6 @@ export default function Home() {
       id: 2,
       name: "Single Room 102",
       capacity: 1,
-      price: 100,
       status: "available",
       floor: "1st",
       image: singleRoomImage,
@@ -42,7 +52,6 @@ export default function Home() {
       id: 3,
       name: "Double Room 201",
       capacity: 2,
-      price: 180,
       status: "available",
       floor: "2nd",
       image: doubleRoomImage,
@@ -51,7 +60,6 @@ export default function Home() {
       id: 4,
       name: "Double Room 202",
       capacity: 2,
-      price: 180,
       status: "available",
       floor: "2nd",
       image: doubleRoomImage,
@@ -60,7 +68,6 @@ export default function Home() {
       id: 5,
       name: "Suite 301",
       capacity: 3,
-      price: 250,
       status: "available",
       floor: "3rd",
       image: suiteRoomImage,
@@ -69,7 +76,6 @@ export default function Home() {
       id: 6,
       name: "Suite 302",
       capacity: 3,
-      price: 250,
       status: "available",
       floor: "3rd",
       image: suiteRoomImage,
@@ -209,7 +215,7 @@ export default function Home() {
                     </div>
                     <div className="detail-item">
                       <span className="detail-label">Price</span>
-                      <span className="detail-value">${room.price}/night</span>
+                      <span className="detail-value">{formatCurrency(getRoomRate(room.name))}/night</span>
                     </div>
                   </div>
                 </div>

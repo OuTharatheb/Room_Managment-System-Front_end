@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import "./History.css";
 
+const formatCurrency = (amount) => `$${amount}`;
+
 export default function History() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRoom, setFilterRoom] = useState("all");
@@ -28,7 +30,7 @@ export default function History() {
         checkInTime: booking.checkInTime || "--",
         checkOutTime: booking.checkOutTime || "--",
         duration: `${nights} ${nights === 1 ? "night" : "nights"}`,
-        totalCost: booking.totalCost || "$0",
+        totalCost: booking.totalCost || formatCurrency(0),
       };
     });
   };
@@ -89,7 +91,7 @@ export default function History() {
         </div>
         <div className="stat-card">
           <div className="stat-label">Total Revenue</div>
-          <div className="stat-value">${calculateRevenue()}</div>
+          <div className="stat-value">{formatCurrency(calculateRevenue())}</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Average Stay</div>

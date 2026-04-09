@@ -1,23 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import './Calendar.css'
-
-const allRooms = [
-  'Single Room 101',
-  'Single Room 102',
-  'Double Room 201',
-  'Double Room 202',
-  'Suite 301',
-  'Suite 302',
-]
+const formatCurrency = (amount) => `$${amount}`
 
 const roomRates = {
   'Single Room 101': 100,
   'Single Room 102': 100,
-  'Double Room 201': 150,
-  'Double Room 202': 150,
+  'Double Room 201': 180,
+  'Double Room 202': 180,
   'Suite 301': 250,
   'Suite 302': 250,
 }
+
+const allRooms = Object.keys(roomRates)
+
+const getRoomRate = (roomName) => roomRates[roomName] ?? 0
 
 const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -120,8 +116,8 @@ export default function Calendar() {
     const checkInDate = new Date(booking.checkInDate)
     const checkOutDate = new Date(booking.checkOutDate)
     const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
-    const rate = roomRates[booking.roomNo] ?? 0
-    const totalCost = `$${nights * rate}`
+    const rate = getRoomRate(booking.roomNo)
+    const totalCost = formatCurrency(nights * rate)
 
     const updatedActiveBookings = activeBookings.filter(item => item.id !== booking.id)
     const currentHistory = JSON.parse(localStorage.getItem('bookingHistory') || '[]')

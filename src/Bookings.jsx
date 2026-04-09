@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import './Bookings.css'
 
+const formatCurrency = (amount) => `$${amount}`
+
 export default function Bookings() {
   const [activeBookings, setActiveBookings] = useState(() => {
     const saved = localStorage.getItem('activeBookings')
@@ -14,8 +16,8 @@ export default function Bookings() {
   const [bookingHistory, setBookingHistory] = useState(() => {
     const saved = localStorage.getItem('bookingHistory')
     return saved ? JSON.parse(saved) : [
-      { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: '$180' },
-      { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: '$250' },
+      { id: 4, roomNo: 'Double Room 202', guestName: 'Sarah Williams', email: 'sarah@example.com', phone: '+1-555-0104', checkInDate: '2026-03-20', checkOutDate: '2026-03-21', guests: 2, status: 'checked-out', checkInTime: '15:00', checkOutTime: '10:30', totalCost: formatCurrency(180) },
+      { id: 5, roomNo: 'Suite 301', guestName: 'Alex Brown', email: 'alex@example.com', phone: '+1-555-0105', checkInDate: '2026-03-18', checkOutDate: '2026-03-19', guests: 2, status: 'checked-out', checkInTime: '16:00', checkOutTime: '11:00', totalCost: formatCurrency(250) },
     ]
   })
 
@@ -52,6 +54,8 @@ export default function Bookings() {
     { id: 5, name: 'Suite 301', rate: 250 },
     { id: 6, name: 'Suite 302', rate: 250 },
   ]
+
+  const getRoomRate = (roomName) => rooms.find(room => room.name === roomName)?.rate ?? 0
 
   const openForm = (booking = null) => {
     if (booking) {
@@ -217,8 +221,8 @@ export default function Bookings() {
     const checkInDate = new Date(booking.checkInDate)
     const checkOutDate = new Date(booking.checkOutDate)
     const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))
-    const room = rooms.find(r => r.name === booking.roomNo)
-    const totalCost = room ? `$${nights * room.rate}` : '$0'
+    const roomRate = getRoomRate(booking.roomNo)
+    const totalCost = formatCurrency(nights * roomRate)
 
     setActiveBookings(activeBookings.filter(b => b.id !== id))
     setBookingHistory([...bookingHistory, {
@@ -279,7 +283,7 @@ export default function Bookings() {
                         isRoomAvailable(room.name, formData.checkInDate, formData.checkOutDate, selectedBooking?.id)
                       return (
                         <option key={room.id} value={room.name} disabled={!isAvailable && formData.checkInDate && formData.checkOutDate}>
-                          {room.name} (${room.rate}/night) {!isAvailable && formData.checkInDate && formData.checkOutDate ? 'Booked' : 'Available'}
+                          {room.name} ({formatCurrency(room.rate)}/night) {!isAvailable && formData.checkInDate && formData.checkOutDate ? 'Booked' : 'Available'}
                         </option>
                       )
                     })}
