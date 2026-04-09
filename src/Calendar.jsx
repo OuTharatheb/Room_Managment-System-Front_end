@@ -184,7 +184,6 @@ export default function Calendar() {
       <header className="calendar-header">
         <div>
           <h1>Booking Calendar</h1>
-          <p>Track check-ins, booking updates, and room availability day by day.</p>
         </div>
         <div className="calendar-actions">
           <button className="btn-calendar" onClick={goToToday}>Today</button>
